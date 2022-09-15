@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>469974751448-5kr9knmefvirin96l2gkv1usskbavnld.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.469974751448-5kr9knmefvirin96l2gkv1usskbavnld</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>469974751448-v6kfq7u38la5obirked5k4dt8lente5t.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCV2UWrc7cnyiu9OzXCNpVv2UltbdfYVi8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>469974751448</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.supplies.beauty.beautySuppliesProject</string>
+	<key>PROJECT_ID</key>
+	<string>beauty-supplies-14641</string>
+	<key>STORAGE_BUCKET</key>
+	<string>beauty-supplies-14641.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:469974751448:ios:a5e9c1762e7b263ec75fad</string>
+</dict>
+</plist>

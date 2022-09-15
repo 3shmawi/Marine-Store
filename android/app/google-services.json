@@ -37,6 +37,13 @@
             {
               "client_id": "469974751448-b78emps97n8lf4jhrmcr4hbcvuu6q5lm.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "469974751448-5kr9knmefvirin96l2gkv1usskbavnld.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.supplies.beauty.beautySuppliesProject"
+              }
             }
           ]
         }
