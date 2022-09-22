@@ -1,3 +1,5 @@
+import 'package:beauty_supplies_project/shared/components/components.dart';
+import 'package:beauty_supplies_project/utilities/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
@@ -25,16 +27,7 @@ class CategoriesScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '',
-                      style: TextStyle(
-                        fontSize: 27,
-                        color: Colors.black.withOpacity(.6),
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    SizedBox(height: w / 35),
-                    Text(
-                      'you can write something\nabout this app here',
+                      'Browse our Categories\nWe hope to find u need',
                       style: TextStyle(
                         fontSize: 19,
                         color: Colors.black.withOpacity(.5),
@@ -45,97 +38,83 @@ class CategoriesScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const DefaultTwoCategoryInRow(
+              DefaultTwoCategoryInRow(
                 title: 'البويات',
                 title2: 'كيماويات التنظيف',
                 icon: IconBroken.swap,
                 icon2: IconBroken.shieldFail,
-                color: Color(0xfff37736),
-                color2: Color(0xfff37736),
+                color: const Color(0xfff37736),
+                color2: const Color(0xfff37736),
+                onTap: () {
+                  Navigator.pushNamed(context, AppRoutes.categoryOnePageRoute);
+                },
+                onTap2: () {},
               ),
-              const DefaultTwoCategoryInRow(
+              DefaultTwoCategoryInRow(
                 title: 'مواتير',
                 title2: 'قطع الغيارات',
                 icon: IconBroken.swap,
                 icon2: IconBroken.shieldFail,
-                color: Color(0xfff37736),
-                color2: Color(0xfff37736),
+                color: const Color(0xfff37736),
+                color2: const Color(0xfff37736),
+                onTap: () {},
+                onTap2: () {},
               ),
-              const DefaultTwoCategoryInRow(
+              DefaultTwoCategoryInRow(
                 title: 'الاكسسوارات',
                 title2: 'مهمات الامان',
                 icon: IconBroken.swap,
                 icon2: IconBroken.shieldFail,
-                color: Color(0xfff37736),
-                color2: Color(0xfff37736),
+                color: const Color(0xfff37736),
+                color2: const Color(0xfff37736),
+                onTap: () {},
+                onTap2: () {},
               ),
-              const DefaultTwoCategoryInRow(
+              DefaultTwoCategoryInRow(
                 title: 'خامات البدن',
                 title2: 'الاصلاح والبناء',
                 icon: IconBroken.swap,
                 icon2: IconBroken.shieldFail,
-                color: Color(0xfff37736),
-                color2: Color(0xfff37736),
+                color: const Color(0xfff37736),
+                color2: const Color(0xfff37736),
+                onTap: () {},
+                onTap2: () {},
               ),
-              const DefaultTwoCategoryInRow(
+              DefaultTwoCategoryInRow(
                 title: 'المراجعة',
                 title2: 'الاستشارات',
                 icon: IconBroken.wallet,
                 icon2: IconBroken.shieldFail,
-                color: Color(0xfff37736),
-                color2: Color(0xfff37736),
+                color: const Color(0xfff37736),
+                color2: const Color(0xfff37736),
+                onTap: () {},
+                onTap2: () {},
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: w / 17),
-                child: const DefaultCategoryPageCard(
+                child: DefaultCategoryPageCard(
                   title: 'خدمات',
                   icon: IconBroken.hide,
-                  color: Color(0xfff37736),
+                  color: const Color(0xfff37736),
+                  onTap: () {},
                 ),
               ),
               SizedBox(height: w / 20),
             ],
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(0, w / 9.5, w / 15, 0),
+            padding: const EdgeInsets.only(top: 50.0, right: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    // HapticFeedback.lightImpact();
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) {
-                    //       return const EditLocation();
-                    //     },
-                    //   ),
-                    // );
-                  },
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(99)),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaY: 5, sigmaX: 5),
-                      child: Container(
-                        height: w / 8.5,
-                        width: w / 8.5,
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(.05),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.settings,
-                            size: w / 17,
-                            color: Colors.black.withOpacity(.6),
-                          ),
-                        ),
-                      ),
+                Column(
+                  children: [
+                    DefaultIconButton(
+                      onTap: () {},
+                      iconData: IconBroken.setting,
+                      size: 12,
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
@@ -152,12 +131,14 @@ class DefaultCategoryPageCard extends StatelessWidget {
   final Color color;
   final IconData icon;
   final String title;
+  final GestureTapCallback onTap;
 
   const DefaultCategoryPageCard({
     Key? key,
     required this.color,
     required this.icon,
     required this.title,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -166,17 +147,7 @@ class DefaultCategoryPageCard extends StatelessWidget {
     return InkWell(
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
-      onTap: () {
-        // HapticFeedback.lightImpact();
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) {
-        //       return route!;
-        //     },
-        //   ),
-        // );
-      },
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(15),
         height: w / 2,
@@ -236,6 +207,8 @@ class DefaultTwoCategoryInRow extends StatelessWidget {
   final Color color2;
   final IconData icon2;
   final String title2;
+  final GestureTapCallback onTap;
+  final GestureTapCallback onTap2;
 
   const DefaultTwoCategoryInRow({
     Key? key,
@@ -245,6 +218,8 @@ class DefaultTwoCategoryInRow extends StatelessWidget {
     required this.icon2,
     required this.title2,
     required this.color2,
+    required this.onTap,
+    required this.onTap2,
   }) : super(key: key);
 
   @override
@@ -259,11 +234,13 @@ class DefaultTwoCategoryInRow extends StatelessWidget {
             color: color,
             icon: icon,
             title: title,
+            onTap: onTap,
           ),
           DefaultCategoryPageCard(
             color: color2,
             icon: icon2,
             title: title2,
+            onTap: onTap2,
           ),
         ],
       ),

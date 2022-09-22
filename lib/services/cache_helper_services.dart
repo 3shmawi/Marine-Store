@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../shared/shared_prefrences/shared_prefrences.dart';
+import '../utilities/enums.dart';
 
 class CacheHelper {
   static late SharedPreferences sharedPreferences;

@@ -1,3 +1,4 @@
 enum SharedKeys {
   id,
+  onBoarding,
 }

@@ -1,16 +1,42 @@
 import 'package:beauty_supplies_project/layout/layout_screen.dart';
+import 'package:beauty_supplies_project/models/cart.dart';
 import 'package:beauty_supplies_project/modules/auth/login/login_screen.dart';
+import 'package:beauty_supplies_project/modules/cart/cart_screen.dart';
 import 'package:beauty_supplies_project/modules/home/home_screen.dart';
+import 'package:beauty_supplies_project/modules/products/products_screen.dart';
+import 'package:beauty_supplies_project/task/task.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../modules/auth/register/register_screen.dart';
+import '../modules/boarding/boarding_screen.dart';
+import '../modules/categories/categories_1/categories_1.dart';
 import 'app_routes.dart';
 
 Route<dynamic> onGenerate(RouteSettings settings) {
   switch (settings.name) {
+    case AppRoutes.productDetailPageRoute:
+      return CupertinoPageRoute(
+        builder: (_) {
+          return ProductDetailsScreen(
+            cartModel:
+                CartModel(image: settings.arguments as String, number: 1),
+          );
+        },
+        settings: settings,
+      );
     case AppRoutes.loginPageRoute:
       return CupertinoPageRoute(
         builder: (_) => const LoginScreen(),
+        settings: settings,
+      );
+    case AppRoutes.categoryOnePageRoute:
+      return CupertinoPageRoute(
+        builder: (_) => const CategoriesOne(),
+        settings: settings,
+      );
+    case AppRoutes.cartPageRoute:
+      return CupertinoPageRoute(
+        builder: (_) => const CartScreen(),
         settings: settings,
       );
     case AppRoutes.registerPageRoute:

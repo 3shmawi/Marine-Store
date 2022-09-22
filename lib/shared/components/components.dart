@@ -1,7 +1,14 @@
+import 'dart:ui';
+
+import 'package:beauty_supplies_project/modules/home/cubit/home_cubit.dart';
+import 'package:beauty_supplies_project/shared/color/colors.dart';
 import 'package:beauty_supplies_project/shared/icon/icons.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import '../../utilities/app_routes.dart';
 
 void showToast({
   required String text,
@@ -247,11 +254,13 @@ class DefaultDashLineWithTextOr extends StatelessWidget {
 class DefaultElevatedButton extends StatelessWidget {
   final Widget header;
   final VoidCallback? onPressed;
+  final Color? color;
 
   const DefaultElevatedButton({
     Key? key,
     required this.header,
     required this.onPressed,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -261,21 +270,22 @@ class DefaultElevatedButton extends StatelessWidget {
       height: size.width / 8,
       width: size.width / 1.22,
       child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            onPrimary: Colors.white,
-            primary: Colors.blueAccent,
-            fixedSize: const Size(1000, 50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
+        style: ElevatedButton.styleFrom(
+          onPrimary: Colors.white,
+          primary: color ?? defaultColor,
+          fixedSize: const Size(1000, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
-          onPressed: onPressed,
-          child: header),
+        ),
+        onPressed: onPressed,
+        child: header,
+      ),
     );
   }
 }
 
-PreferredSize defaultAppBar(context, {required String title}) {
+PreferredSize defaultAppBar(context,HomeCubit cubit, {required String title}) {
   return PreferredSize(
     preferredSize: const Size(double.infinity, kToolbarHeight),
     child: ClipRRect(
@@ -296,6 +306,7 @@ PreferredSize defaultAppBar(context, {required String title}) {
         title: Row(
           children: [
             Expanded(
+              flex: 5,
               child: InkWell(
                 onTap: () {},
                 borderRadius: BorderRadius.circular(15),
@@ -325,26 +336,46 @@ PreferredSize defaultAppBar(context, {required String title}) {
                 ),
               ),
             ),
-            Container(
-              height: 40,
-              width: 40,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.blueAccent,
-              ),
-              child: InkWell(
-                onTap: () {},
-                borderRadius: BorderRadius.circular(15),
-                child: const Icon(
-                  IconBroken.buy,
-                  color: Colors.white,
+            Stack(
+              alignment: AlignmentDirectional.topEnd,
+              children: [
+                DefaultIconButton(
+                  onTap: () {Navigator.pushNamed(context, AppRoutes.cartPageRoute);},
+                  iconData: IconBroken.buy,
+                  size: 12,
                 ),
-              ),
-            )
+                Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(99),
+                  ),
+                  child: Text(
+                    ' ${cubit.cart.length} ',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
+    ),
+  );
+}
+
+AppBar defaultAppBarWithoutAnything(
+  context,
+) {
+  return AppBar(
+    backgroundColor: Colors.transparent,
+    systemOverlayStyle: const SystemUiOverlayStyle(
+      statusBarColor: Color.fromRGBO(0, 47, 108, 0),
+      //systemNavigationBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.black,
+      systemNavigationBarDividerColor: Colors.black,
     ),
   );
 }
@@ -467,6 +498,155 @@ class _DefaultCardCategoryState extends State<DefaultCardCategory>
                 ),
                 const SizedBox(),
               ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DefaultFavoriteCard extends StatelessWidget {
+  final String image;
+  final String title;
+  final String subTitle;
+  final GestureTapCallback onTap;
+
+  const DefaultFavoriteCard({
+    Key? key,
+    required this.onTap,
+    required this.image,
+    required this.title,
+    required this.subTitle,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
+    return Container(
+      height: w / 2.3,
+      width: w,
+      padding: EdgeInsets.fromLTRB(w / 20, 0, w / 20, w / 20),
+      child: InkWell(
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(20),
+            ),
+            border: Border.all(color: Colors.white.withOpacity(.1), width: 1),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(w / 50),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  height: w / 3,
+                  width: w / 3,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(.2),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Image(
+                    image: CachedNetworkImageProvider(
+                      image,
+                    ),
+                    // height: 120.0,
+                    // width: 150.0,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                SizedBox(width: w / 40),
+                SizedBox(
+                  width: w / 2.05,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        maxLines: 2,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          color: defaultColor,
+                          fontSize: w / 20,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
+                          wordSpacing: 1,
+                        ),
+                      ),
+                      Text(
+                        subTitle,
+                        maxLines: 1,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: defaultColor,
+                          fontSize: w / 25,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        'Tap to know more',
+                        maxLines: 1,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DefaultIconButton extends StatelessWidget {
+  final IconData iconData;
+  final GestureTapCallback onTap;
+  final Color color;
+  final Color? backgroundColor;
+  final double size;
+
+  const DefaultIconButton({
+    Key? key,
+    required this.onTap,
+    required this.iconData,
+    this.color = Colors.blueAccent,
+    this.backgroundColor,
+    this.size = 17,
+  }) : super(
+          key: key,
+        );
+
+  @override
+  Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
+    return InkWell(
+      borderRadius: BorderRadius.circular(99),
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: backgroundColor ?? Colors.black.withOpacity(.05),
+          shape: BoxShape.circle,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Center(
+            child: Icon(
+              iconData,
+              size: w / size,
+              color: color,
             ),
           ),
         ),

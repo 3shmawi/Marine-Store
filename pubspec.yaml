@@ -29,6 +29,8 @@ dependencies:
   cloud_firestore: ^3.4.6
   carousel_slider: ^4.1.1
   cached_network_image: ^3.2.1
+  flutter_rating_bar: ^4.0.1
+  smooth_page_indicator: ^1.0.0+2
 
 
 
@@ -52,7 +54,7 @@ flutter:
 
 
   assets:
-    - assets/
+    - assets/images/
 
 
   fonts:
