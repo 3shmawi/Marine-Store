@@ -12,20 +12,6 @@ List<String> productImages = [
   'https://www.boatingmag.com/wp-content/uploads/sites/16/2021/09/BTG0420-BOTY-Axopar-3.jpg',
   'https://global.yamaha-motor.com/business/omdo/products/high-speed-boat/img/high-speed-boat_exteriors_004.jpg',
   'https://www.seafoxboats.com/wp-content/uploads/2022/05/368-updated-scaled.jpg',
-  'https://images.unsplash.com/photo-1525909002-1b05e0c869d8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29sb3JzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60',
-  'https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fGNvbG9yc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-  'https://images.unsplash.com/photo-1587586062323-836089e60d52?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjV8fGNvbG9yc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-  'https://images.unsplash.com/photo-1500043204644-768d20653f32?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzR8fGNvbG9yc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-  'https://images.unsplash.com/photo-1541723011216-c57eaed19919?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzZ8fGNvbG9yc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-  'https://images.unsplash.com/photo-1504275107627-0c2ba7a43dba?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NjZ8fGNvbG9yc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-  'https://images.unsplash.com/photo-1518799937599-77763326c394?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Njd8fGNvbG9yc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-  'https://images.unsplash.com/photo-1512952398228-c6bda07ac7b8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nzh8fGNvbG9yc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-  'https://images.unsplash.com/photo-1541723568817-3bb3d2dd5505?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTN8fGNvbG9yc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-  'https://images.unsplash.com/photo-1509664158680-07c5032b51e5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTI5fHxjb2xvcnN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
-  'https://images.unsplash.com/photo-1603625094339-c6d5f80e9cfa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Ym9hdHN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
-  'https://images.unsplash.com/photo-1607144415124-701c6f774006?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Ym9hdHN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
-  'https://images.unsplash.com/photo-1553246969-7dcb4259a87b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Ym9hdHN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
-  'https://images.unsplash.com/photo-1568476612160-787b6a1d5fb1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8Ym9hdHN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
   'https://images.unsplash.com/photo-1609021933073-7f58bfce4ba4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8Ym9hdHN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
   'https://images.unsplash.com/photo-1528580279421-f0b84f9d7640?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fGJvYXRzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60',
   'https://images.unsplash.com/photo-1558271736-cd043ef2e855?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTh8fGJvYXRzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60',
@@ -60,7 +46,7 @@ List<String> categoryNames = [
   'خدمات',
 ];
 List<String> categoryImages = [
-  'https://orient-paints.com/wp-content/uploads/2018/07/select-color-swatch-to-paint-wall.jpg',
+  'https://firebasestorage.googleapis.com/v0/b/beauty-supplies-14641.appspot.com/o/WhatsApp%20Image%202022-09-16%20at%2010.47.45%20PM.jpeg?alt=media&token=dc0868cb-2b4d-4cb0-8fbc-c1d842c3d5f8',
   'https://www.un.org/sites/un2.un.org/files/styles/large-article-image-style-16-9/public/field/image/emily_penn_1_crop_4.jpg?itok=hcl8c1Q2',
   'https://ia.eferrit.com/ia/42f9085d56bc389c.jpg',
   'https://mount-mal.com/zsefe/ihD_UKKC8mleJlAWztCtpQHaE6.jpg',
@@ -72,3 +58,12 @@ List<String> categoryImages = [
   'https://image.isu.pub/140105074138-7f347d11b63004295167c41aaea7cc9a/jpg/page_1.jpg',
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsDMKNStGLIbv2qCfuQLu1qrkJcbQQ7EQHeQ&usqp=CAU',
 ];
+
+String getErrorMessage(String v) {
+  for (int i = 0; i < v.length; i++) {
+    if (v[i] == ']') {
+      return v.substring(i+2);
+    }
+  }
+  return v;
+}

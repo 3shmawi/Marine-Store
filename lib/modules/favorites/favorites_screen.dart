@@ -23,52 +23,70 @@ class FavoritesScreen extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: Colors.grey[200],
-          body: ListView.builder(
-            itemBuilder: (context, index) => Stack(
-              alignment: AlignmentDirectional.bottomEnd,
-              children: [
-                DefaultFavoriteCard(
-                  onTap: () {
-                    Navigator.pushNamed(
-                        context, AppRoutes.productDetailPageRoute,
-                        arguments: cubit.fav[index]);
-                  },
-                  image: cubit.fav[index],
-                  title: 'Title',
-                  subTitle: 'subTitle',
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Column(
-                      children: [
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(bottom: 10.0, right: 30),
-                          child: DefaultIconButton(
-                            onTap: () {},
-                            iconData: IconBroken.buy,
+          body: cubit.fav.isNotEmpty
+              ? ListView.builder(
+                  itemBuilder: (context, index) => Stack(
+                    alignment: AlignmentDirectional.bottomEnd,
+                    children: [
+                      DefaultFavoriteCard(
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, AppRoutes.productDetailPageRoute,
+                              arguments: cubit.fav[index]);
+                        },
+                        image: cubit.fav[index],
+                        title: 'Title',
+                        subTitle: 'subTitle',
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: 10.0, right: 30),
+                                child: DefaultIconButton(
+                                  onTap: () {},
+                                  iconData: IconBroken.buy,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: 30.0, right: 30),
+                                child: DefaultIconButton(
+                                  onTap: () {
+                                    cubit.changeFavoriteState(cubit.fav[index]);
+                                  },
+                                  iconData: IconBroken.delete,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(bottom: 30.0, right: 30),
-                          child: DefaultIconButton(
-                            onTap: () {
-                              cubit.changeFavoriteState(cubit.fav[index]);
-                            },
-                            iconData: IconBroken.delete,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      )
+                    ],
+                  ),
+                  itemCount: cubit.fav.length,
                 )
-              ],
-            ),
-            itemCount: cubit.fav.length,
-          ),
+              : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/search_product.png',
+                      ),
+                      Text(
+                        'There is no favorite items, Add Some',
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption!
+                            .copyWith(fontSize: 20),
+                      ),
+                    ],
+                  ),
+                ),
         );
       },
     );

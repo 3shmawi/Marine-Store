@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../services/cache_helper_services.dart';
 import '../../../../utilities/enums.dart';
 
-
 part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpStates> {
@@ -31,7 +30,7 @@ class SignUpCubit extends Cubit<SignUpStates> {
       if (kDebugMode) {
         print(error.toString());
       }
-      emit(CreateUserErrorState());
+      emit(CreateUserErrorState(error.toString()));
     });
   }
 
@@ -44,5 +43,16 @@ class SignUpCubit extends Cubit<SignUpStates> {
         isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
 
     emit(RegisterChangePasswordVisibilityState());
+  }
+
+  IconData suffix2 = Icons.visibility_outlined;
+  bool isPassword2 = true;
+
+  void changePasswordVisibility2() {
+    isPassword2 = !isPassword2;
+    suffix2 =
+        isPassword2 ? Icons.visibility_outlined : Icons.visibility_off_outlined;
+
+    emit(RegisterChangePasswordVisibilityState2());
   }
 }

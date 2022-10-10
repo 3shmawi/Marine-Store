@@ -8,10 +8,11 @@ import '../../../shared/components/components.dart';
 import '../../../shared/components/constants.dart';
 import '../../../shared/icon/icons.dart';
 import '../../../utilities/app_routes.dart';
-import '../../home/cubit/home_state.dart';
+import '../home/cubit/home_state.dart';
 
-class CategoriesOne extends StatelessWidget {
-  const CategoriesOne({Key? key}) : super(key: key);
+
+class CategoryProducts extends StatelessWidget {
+  const CategoryProducts({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

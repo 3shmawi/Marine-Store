@@ -1,6 +1,11 @@
+import 'package:beauty_supplies_project/modules/auth/register/register_screen.dart';
+import 'package:beauty_supplies_project/services/cache_helper_services.dart';
 import 'package:beauty_supplies_project/shared/components/components.dart';
 import 'package:beauty_supplies_project/shared/icon/icons.dart';
+import 'package:beauty_supplies_project/utilities/enums.dart';
 import 'package:flutter/material.dart';
+
+import '../../services/firebase_auth_services.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -55,7 +60,7 @@ class SettingScreen extends StatelessWidget {
                             height: 5,
                           ),
                           Text(
-                            'mohamedashmawy918@gmail.com',
+                            Auth().currentUser!.email ?? '',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.caption,
@@ -118,23 +123,39 @@ class SettingScreen extends StatelessWidget {
               child: Align(
                 alignment: AlignmentDirectional.center,
                 child: DefaultElevatedButton(
-                    onPressed: () {},
-                    header: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(IconBroken.logout),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          'Log out',
-                          style: Theme.of(context)
-                              .textTheme
-                              .button!
-                              .copyWith(color: Colors.white),
-                        ),
-                      ],
-                    )),
+                  onPressed: () {
+                    //Auth().currentUser!.delete();
+
+                    Auth().logout().then((value) {
+                      showToast(text: 'Logout Success', color: Colors.green);
+                      CacheHelper.removeData(key: SharedKeys.id);
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignUpScreen(),
+                          ),
+                          (route) => false);
+                    }).catchError((error) {
+                      showToast(text: 'Logout Failed', color: Colors.red);
+                    });
+                  },
+                  header: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(IconBroken.logout),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Logout',
+                        style: Theme.of(context)
+                            .textTheme
+                            .button!
+                            .copyWith(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],

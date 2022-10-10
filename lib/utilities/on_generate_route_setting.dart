@@ -4,12 +4,9 @@ import 'package:beauty_supplies_project/modules/auth/login/login_screen.dart';
 import 'package:beauty_supplies_project/modules/cart/cart_screen.dart';
 import 'package:beauty_supplies_project/modules/home/home_screen.dart';
 import 'package:beauty_supplies_project/modules/products/products_screen.dart';
-import 'package:beauty_supplies_project/task/task.dart';
 import 'package:flutter/cupertino.dart';
-
 import '../modules/auth/register/register_screen.dart';
-import '../modules/boarding/boarding_screen.dart';
-import '../modules/categories/categories_1/categories_1.dart';
+import '../modules/category_products/category_products_screen.dart';
 import 'app_routes.dart';
 
 Route<dynamic> onGenerate(RouteSettings settings) {
@@ -31,7 +28,7 @@ Route<dynamic> onGenerate(RouteSettings settings) {
       );
     case AppRoutes.categoryOnePageRoute:
       return CupertinoPageRoute(
-        builder: (_) => const CategoriesOne(),
+        builder: (_) => const CategoryProducts(),
         settings: settings,
       );
     case AppRoutes.cartPageRoute:

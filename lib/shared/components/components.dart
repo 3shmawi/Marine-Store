@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:beauty_supplies_project/modules/home/cubit/home_cubit.dart';
 import 'package:beauty_supplies_project/shared/color/colors.dart';
 import 'package:beauty_supplies_project/shared/icon/icons.dart';
@@ -271,8 +269,8 @@ class DefaultElevatedButton extends StatelessWidget {
       width: size.width / 1.22,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          onPrimary: Colors.white,
-          primary: color ?? defaultColor,
+          foregroundColor: Colors.white,
+          backgroundColor: color ?? defaultColor,
           fixedSize: const Size(1000, 50),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -285,7 +283,7 @@ class DefaultElevatedButton extends StatelessWidget {
   }
 }
 
-PreferredSize defaultAppBar(context,HomeCubit cubit, {required String title}) {
+PreferredSize defaultAppBar(context, HomeCubit cubit, {required String title}) {
   return PreferredSize(
     preferredSize: const Size(double.infinity, kToolbarHeight),
     child: ClipRRect(
@@ -340,7 +338,9 @@ PreferredSize defaultAppBar(context,HomeCubit cubit, {required String title}) {
               alignment: AlignmentDirectional.topEnd,
               children: [
                 DefaultIconButton(
-                  onTap: () {Navigator.pushNamed(context, AppRoutes.cartPageRoute);},
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoutes.cartPageRoute);
+                  },
                   iconData: IconBroken.buy,
                   size: 12,
                 ),
@@ -654,3 +654,11 @@ class DefaultIconButton extends StatelessWidget {
     );
   }
 }
+
+Future navigateAndFinish(context, route) => Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => route,
+      ),
+      (route) => false,
+    );
