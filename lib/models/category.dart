@@ -1,13 +1,11 @@
-class UserModel {
+class CategoryModel {
   final String id;
   final String name;
-final String email;
   final String imgUrl;
 
-  UserModel({
+  CategoryModel({
     required this.id,
     required this.name,
-    required this.email,
     required this.imgUrl,
   });
 
@@ -15,16 +13,14 @@ final String email;
     return {
       'id': id,
       'name': name,
-      'email': email,
       'imgUrl': imgUrl,
     };
   }
 
-  factory UserModel.fromMap(Map<String, dynamic> map, String documentId) {
-    return UserModel(
+  factory CategoryModel.fromMap(Map<String, dynamic> map, String documentId) {
+    return CategoryModel(
       id: documentId,
       name: map['name'] as String,
-      email: map['email'] as String,
       imgUrl: map['imgUrl'] as String,
     );
   }

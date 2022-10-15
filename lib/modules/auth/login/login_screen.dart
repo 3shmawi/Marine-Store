@@ -5,17 +5,17 @@ import 'package:beauty_supplies_project/shared/icon/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../layout/layout_screen.dart';
+import '../../../layout/usr_layout/usr_layout_screen.dart';
 import '../../../shared/components/constants.dart';
 import '../../../utilities/app_routes.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    var emailController = TextEditingController();
-    var passwordController = TextEditingController();
     return BlocProvider(
       create: (context) => LoginCubit(),
       child: Scaffold(
@@ -76,8 +76,7 @@ class LoginScreen extends StatelessWidget {
                           height: 40,
                         ),
                         Padding(
-                          padding:
-                          const EdgeInsets.symmetric(vertical: 25.0),
+                          padding: const EdgeInsets.symmetric(vertical: 25.0),
                           child: DefaultFormField(
                             textInputType: TextInputType.emailAddress,
                             textEditingController: emailController,
@@ -88,8 +87,7 @@ class LoginScreen extends StatelessWidget {
                         BlocBuilder<LoginCubit, LoginStates>(
                           builder: (context, state) {
                             return DefaultFormField(
-                              isPassword:
-                              context.read<LoginCubit>().isPassword,
+                              isPassword: context.read<LoginCubit>().isPassword,
                               textInputType: TextInputType.visiblePassword,
                               textEditingController: passwordController,
                               prefixIcon: IconBroken.lock,
@@ -134,28 +132,27 @@ class LoginScreen extends StatelessWidget {
                           builder: (context, state) {
                             return state is LoginLoadingState
                                 ? Center(
-                              child: CircularProgressIndicator(
-                                color: defaultColor,
-                              ),
-                            )
+                                    child: CircularProgressIndicator(
+                                      color: defaultColor,
+                                    ),
+                                  )
                                 : DefaultElevatedButton(
-                              onPressed: () {
-                                context.read<LoginCubit>().userLogin(
-                                  email: emailController.text,
-                                  password:
-                                  passwordController.text,
-                                );
-                              },
-                              header: Text(
-                                'LOGIN',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .button!
-                                    .copyWith(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            );
+                                    onPressed: () {
+                                      context.read<LoginCubit>().userLogin(
+                                            email: emailController.text,
+                                            password: passwordController.text,
+                                          );
+                                    },
+                                    header: Text(
+                                      'LOGIN',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .button!
+                                          .copyWith(
+                                            color: Colors.white,
+                                          ),
+                                    ),
+                                  );
                           },
                         ),
                         Padding(
@@ -178,8 +175,8 @@ class LoginScreen extends StatelessWidget {
                                       .textTheme
                                       .caption!
                                       .copyWith(
-                                    color: Colors.deepPurple,
-                                  ),
+                                        color: Colors.deepPurple,
+                                      ),
                                 ),
                               ),
                             ],
@@ -200,7 +197,7 @@ class LoginScreen extends StatelessWidget {
   void listenerCondition(LoginStates state, BuildContext context) {
     if (state is LoginSuccessState) {
       showToast(text: 'Login Success', color: Colors.green);
-      navigateAndFinish(context, const LayoutScreen());
+      navigateAndFinish(context, const UsrLayoutScreen());
     } else if (state is LoginErrorState) {
       showToast(text: getErrorMessage(state.error), color: Colors.red);
     }

@@ -10,7 +10,6 @@ import '../../../shared/icon/icons.dart';
 import '../../../utilities/app_routes.dart';
 import '../home/cubit/home_state.dart';
 
-
 class CategoryProducts extends StatelessWidget {
   const CategoryProducts({Key? key}) : super(key: key);
 
@@ -20,6 +19,7 @@ class CategoryProducts extends StatelessWidget {
       listener: (context, state) {
         // TODO: implement listener
       },
+
       builder: (context, state) {
         var cubit = HomeCubit.get(context);
         return Scaffold(
@@ -28,17 +28,19 @@ class CategoryProducts extends StatelessWidget {
           body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 30),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 30),
               child: Column(
                 children: List.generate(
                   productImages.length,
-                      (index) => InkWell(
+                  (index) => InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.productDetailPageRoute,
+                      Navigator.pushNamed(
+                          context, AppRoutes.productDetailPageRoute,
                           arguments: productImages[index]);
                     },
                     child: Card(
-                      elevation: 5,
+                      elevation: 10,
                       margin: const EdgeInsets.all(10),
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       shape: RoundedRectangleBorder(
@@ -54,10 +56,11 @@ class CategoryProducts extends StatelessWidget {
                             ),
                             width: double.infinity,
                             fit: BoxFit.cover,
-
+                            height: 200,
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15.0, vertical: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -75,11 +78,12 @@ class CategoryProducts extends StatelessWidget {
                                     ),
                                     const Spacer(),
                                     DefaultIconButton(
-                                      backgroundColor:
-                                      cubit.fav.contains(productImages[index])
+                                      backgroundColor: cubit.fav
+                                              .contains(productImages[index])
                                           ? Colors.redAccent
                                           : Colors.black.withOpacity(.09),
-                                      color: cubit.fav.contains(productImages[index])
+                                      color: cubit.fav
+                                              .contains(productImages[index])
                                           ? Colors.white
                                           : Colors.red,
                                       onTap: () {

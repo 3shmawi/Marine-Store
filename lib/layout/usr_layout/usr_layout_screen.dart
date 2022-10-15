@@ -1,18 +1,18 @@
-import 'package:beauty_supplies_project/shared/icon/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'cubit/layout_cubit.dart';
+import 'cubit/usr_layout_cubit.dart';
 
-class LayoutScreen extends StatelessWidget {
-  const LayoutScreen({Key? key}) : super(key: key);
+
+class UsrLayoutScreen extends StatelessWidget {
+  const UsrLayoutScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LayoutCubit, LayoutStates>(
+    return BlocConsumer<UsrLayoutCubit, UsrLayoutStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        var cubit = LayoutCubit.get(context);
+        var cubit = UsrLayoutCubit.get(context);
         double displayWidth = MediaQuery.of(context).size.width;
         return Scaffold(
           backgroundColor: Colors.grey[300],

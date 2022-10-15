@@ -1,4 +1,4 @@
-import 'package:beauty_supplies_project/layout/layout_screen.dart';
+import 'package:beauty_supplies_project/layout/usr_layout/usr_layout_screen.dart';
 import 'package:beauty_supplies_project/shared/components/components.dart';
 import 'package:beauty_supplies_project/shared/icon/icons.dart';
 import 'package:beauty_supplies_project/utilities/app_routes.dart';
@@ -10,14 +10,14 @@ import '../../../shared/components/constants.dart';
 import 'cubit/sign_up_cubit.dart';
 
 class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+  SignUpScreen({Key? key}) : super(key: key);
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController rePasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    var nameController = TextEditingController();
-    var emailController = TextEditingController();
-    var passwordController = TextEditingController();
-    var rePasswordController = TextEditingController();
     return BlocProvider(
       create: (context) => SignUpCubit(),
       child: Scaffold(
@@ -158,7 +158,7 @@ class SignUpScreen extends StatelessWidget {
                                 : DefaultElevatedButton(
                                     onPressed: () {
                                       context.read<SignUpCubit>().userRegister(
-                                            name: nameController.text,
+                                             name: nameController.text,
                                             email: emailController.text,
                                             password: passwordController.text,
                                           );
@@ -215,7 +215,7 @@ class SignUpScreen extends StatelessWidget {
   void listenerCondition(SignUpStates state, BuildContext context) {
     if (state is CreateUserSuccessState) {
       showToast(text: 'Register Success', color: Colors.green);
-      navigateAndFinish(context, const LayoutScreen());
+      navigateAndFinish(context, const UsrLayoutScreen());
     } else if (state is CreateUserErrorState) {
       showToast(text: getErrorMessage(state.error), color: Colors.red);
     }

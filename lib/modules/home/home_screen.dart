@@ -1,3 +1,7 @@
+import 'package:beauty_supplies_project/models/category.dart';
+import 'package:beauty_supplies_project/modules/carousel_slider_image/carousel_slider_image.dart';
+import 'package:beauty_supplies_project/modules/categories/cubit/categories_cubit.dart';
+import 'package:beauty_supplies_project/modules/categories/cubit/categories_state.dart';
 import 'package:beauty_supplies_project/modules/home/cubit/home_cubit.dart';
 import 'package:beauty_supplies_project/shared/components/components.dart';
 import 'package:beauty_supplies_project/utilities/app_routes.dart';
@@ -16,8 +20,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
         // TODO: implement listener
@@ -38,40 +40,7 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(
                   height: 100,
                 ),
-                CarouselSlider(
-                  items: List.generate(
-                    images.length,
-                    (index) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Container(
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Image(
-                          image: CachedNetworkImageProvider(
-                            images[index],
-                          ),
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                        ),
-                      ),
-                    ),
-                  ),
-                  options: CarouselOptions(
-                    height: 180,
-                    viewportFraction: 1.0,
-                    enlargeCenterPage: false,
-                    initialPage: 0,
-                    enableInfiniteScroll: true,
-                    reverse: false,
-                    autoPlay: true,
-                    autoPlayInterval: const Duration(seconds: 3),
-                    autoPlayAnimationDuration: const Duration(seconds: 1),
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    scrollDirection: Axis.horizontal,
-                  ),
-                ),
+                const CarouselSliderImageScreen(),
                 const SizedBox(
                   height: 10.0,
                 ),
@@ -94,52 +63,86 @@ class HomeScreen extends StatelessWidget {
                       ),
                       SizedBox(
                         height: 154,
-                        child: ListView.separated(
-                          physics: const BouncingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) => InkWell(
-                            onTap: (){Navigator.pushNamed(context, AppRoutes.categoryOnePageRoute);},
-                            child: Container(
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Image(
-                                    image: CachedNetworkImageProvider(
-                                      categoryImages[index],
-                                    ),
-                                    height: 120.0,
-                                    width: 150.0,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.all(5),
-                                    alignment: AlignmentDirectional.centerEnd,
-                                    color: Colors.white,
-                                    width: 150.0,
-                                    child: Text(
-                                      categoryNames[index],
-                                      maxLines: 1,
-                                      textDirection: TextDirection.rtl,
-                                      textAlign: TextAlign.end,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 14.0,
-                                        color: defaultColor,
+                        child: BlocBuilder<CategoriesCubit, CategoriesState>(
+                          builder: (context, state) {
+                            return StreamBuilder<List<CategoryModel>>(
+                              stream: context
+                                  .read<CategoriesCubit>()
+                                  .categoryStream(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.active) {
+                                  final category = snapshot.data;
+                                  if (category == null || category.isEmpty) {
+                                    return const Center(
+                                      child: Text(
+                                        'No Category Available yet!',
+                                      ),
+                                    );
+                                  }
+                                  return ListView.separated(
+                                    physics: const BouncingScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) => InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(context,
+                                            AppRoutes.categoryOnePageRoute);
+                                      },
+                                      child: Container(
+                                        clipBehavior:
+                                            Clip.antiAliasWithSaveLayer,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Image(
+                                              image: CachedNetworkImageProvider(
+                                                category[index].imgUrl,
+                                              ),
+                                              height: 120.0,
+                                              width: 150.0,
+                                              fit: BoxFit.cover,
+                                            ),
+                                            Container(
+                                              padding: const EdgeInsets.all(5),
+                                              alignment: AlignmentDirectional
+                                                  .centerEnd,
+                                              color: Colors.white,
+                                              width: 150.0,
+                                              child: Text(
+                                                category[index].name,
+                                                maxLines: 1,
+                                                textDirection:
+                                                    TextDirection.rtl,
+                                                textAlign: TextAlign.end,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: defaultColor,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          separatorBuilder: (context, index) => const SizedBox(
-                            width: 10.0,
-                          ),
-                          itemCount: categoryImages.length,
+                                    separatorBuilder: (context, index) =>
+                                        const SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    itemCount: category.length,
+                                  );
+                                }
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                            );
+                          },
                         ),
                       ),
                       const SizedBox(
@@ -168,7 +171,8 @@ class HomeScreen extends StatelessWidget {
                           (index) => InkWell(
                             onTap: () {
                               Navigator.pushNamed(
-                                  context, AppRoutes.productDetailPageRoute,arguments: productImages[index]);
+                                  context, AppRoutes.productDetailPageRoute,
+                                  arguments: productImages[index]);
                             },
                             child: Card(
                               clipBehavior: Clip.antiAliasWithSaveLayer,

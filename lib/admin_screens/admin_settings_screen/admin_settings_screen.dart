@@ -1,14 +1,14 @@
-import 'package:beauty_supplies_project/modules/auth/register/register_screen.dart';
-import 'package:beauty_supplies_project/services/cache_helper_services.dart';
-import 'package:beauty_supplies_project/shared/components/components.dart';
-import 'package:beauty_supplies_project/shared/icon/icons.dart';
-import 'package:beauty_supplies_project/utilities/enums.dart';
 import 'package:flutter/material.dart';
 
+import '../../modules/auth/register/register_screen.dart';
+import '../../services/cache_helper_services.dart';
 import '../../services/firebase_auth_services.dart';
+import '../../shared/components/components.dart';
+import '../../shared/icon/icons.dart';
+import '../../utilities/enums.dart';
 
-class SettingScreen extends StatelessWidget {
-  const SettingScreen({Key? key}) : super(key: key);
+class AdminSettingScreen extends StatelessWidget {
+  const AdminSettingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +22,9 @@ class SettingScreen extends StatelessWidget {
             Text(
               'My Profile',
               style: Theme.of(context).textTheme.headline4!.copyWith(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
-                  ),
+                color: Colors.black,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -77,14 +77,14 @@ class SettingScreen extends StatelessWidget {
                 child: Column(
                   children: List.generate(
                     15,
-                    (index) => InkWell(
+                        (index) => InkWell(
                       onTap: () {},
                       child: Card(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15)),
                         child: Padding(
                           padding:
-                              const EdgeInsets.fromLTRB(15.0, 15.0, 10.0, 15.0),
+                          const EdgeInsets.fromLTRB(15.0, 15.0, 10.0, 15.0),
                           child: Row(
                             children: [
                               Column(
@@ -93,7 +93,7 @@ class SettingScreen extends StatelessWidget {
                                   Text(
                                     'My Orders',
                                     style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                    Theme.of(context).textTheme.subtitle1,
                                   ),
                                   const SizedBox(
                                     height: 5,
@@ -134,7 +134,7 @@ class SettingScreen extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) =>  SignUpScreen(),
                           ),
-                          (route) => false);
+                              (route) => false);
                     }).catchError((error) {
                       showToast(text: 'Logout Failed', color: Colors.red);
                     });

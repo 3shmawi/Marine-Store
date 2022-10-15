@@ -3,17 +3,16 @@ import 'package:beauty_supplies_project/modules/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../modules/categories/categories_screen.dart';
-import '../../modules/favorites/favorites_screen.dart';
-import '../../modules/products/products_screen.dart';
-import '../../shared/icon/icons.dart';
+import '../../../modules/categories/categories_screen.dart';
+import '../../../modules/favorites/favorites_screen.dart';
+import '../../../shared/icon/icons.dart';
 
-part 'layout_state.dart';
+part 'usr_layout_state.dart';
 
-class LayoutCubit extends Cubit<LayoutStates> {
-  LayoutCubit() : super(LayoutInitial());
+class UsrLayoutCubit extends Cubit<UsrLayoutStates> {
+  UsrLayoutCubit() : super(UsrLayoutInitial());
 
-  static LayoutCubit get(context) => BlocProvider.of(context);
+  static UsrLayoutCubit get(context) => BlocProvider.of(context);
   int currentIndex = 0;
 
   List<Widget> bottomScreens = [
