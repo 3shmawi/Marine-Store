@@ -22,8 +22,8 @@ class CacheHelper {
     if (value is String) return await sharedPreferences.setString(key.name, value);
     if (value is int) return await sharedPreferences.setInt(key.name, value);
     if (value is bool) return await sharedPreferences.setBool(key.name, value);
-
-    return await sharedPreferences.setDouble(key.name, value);
+    if (value is double) return await sharedPreferences.setDouble(key.name, value);
+       return await sharedPreferences.setStringList(key.name, value);
   }
 
   static Future<bool> removeData({

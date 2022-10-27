@@ -75,10 +75,25 @@ class FavoritesScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'assets/images/search_product.png',
+                        'assets/images/sala.png',
+                      ),
+                      const SizedBox(
+                        height: 40,
                       ),
                       Text(
-                        'There is no favorite items, Add Some',
+                        'No, Fav Products yet!',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption!
+                            .copyWith(fontSize: 25),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Add Some',
+                        textAlign: TextAlign.center,
                         style: Theme.of(context)
                             .textTheme
                             .caption!

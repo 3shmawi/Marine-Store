@@ -57,4 +57,9 @@ class HomeCubit extends Cubit<HomeState> {
     cart[index].number -= 1;
     emit(ChangeCartNumberCountDecState());
   }
+
+
+
+
+
 }

@@ -1,4 +1,4 @@
-import '../utilities/assets.dart';
+
 
 class ProductModel {
   final String id;
@@ -10,6 +10,7 @@ class ProductModel {
   final String category;
   final int? rate;
 
+
   ProductModel({
     required this.id,
     required this.title,
@@ -19,6 +20,7 @@ class ProductModel {
     required this.category,
     this.discountValue,
     this.rate,
+
   });
 
   Map<String, dynamic> toMap() {
@@ -31,6 +33,7 @@ class ProductModel {
       'discountValue': discountValue,
       'category': category,
       'rate': rate,
+
     };
   }
 

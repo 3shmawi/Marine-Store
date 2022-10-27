@@ -1,11 +1,11 @@
 import 'package:beauty_supplies_project/layout/admin_layout/admin_layout_screen.dart';
+import 'package:beauty_supplies_project/layout/usr_layout/usr_layout_screen.dart';
 import 'package:beauty_supplies_project/models/cart.dart';
 import 'package:beauty_supplies_project/modules/auth/login/login_screen.dart';
 import 'package:beauty_supplies_project/modules/cart/cart_screen.dart';
 import 'package:beauty_supplies_project/modules/home/home_screen.dart';
 import 'package:beauty_supplies_project/modules/products/products_screen.dart';
 import 'package:flutter/cupertino.dart';
-import '../admin_screens/upload_product/admin_upload_product_view.dart';
 import '../modules/auth/register/register_screen.dart';
 import '../modules/category_products/category_products_screen.dart';
 import 'app_routes.dart';
@@ -58,7 +58,7 @@ Route<dynamic> onGenerate(RouteSettings settings) {
     case AppRoutes.landingPageRoute:
     default:
       return CupertinoPageRoute(
-        builder: (_) => const AdminLayoutScreen(),
+        builder: (_) => const UsrLayoutScreen(),
         settings: settings,
       );
   }

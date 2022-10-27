@@ -38,6 +38,7 @@ class SignUpCubit extends Cubit<SignUpStates> {
       }
       createUser(
         UserModel(
+          isAdmin: false,
           id: value.uid,
           name: name,
           email: email,

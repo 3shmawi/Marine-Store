@@ -1,9 +1,11 @@
 import 'package:beauty_supplies_project/modules/home/cubit/home_cubit.dart';
+import 'package:beauty_supplies_project/modules/home/cubit/home_state.dart';
 import 'package:beauty_supplies_project/shared/color/colors.dart';
 import 'package:beauty_supplies_project/shared/icon/icons.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../utilities/app_routes.dart';
@@ -283,7 +285,7 @@ class DefaultElevatedButton extends StatelessWidget {
   }
 }
 
-PreferredSize defaultAppBar(context, HomeCubit cubit, {required String title}) {
+PreferredSize defaultAppBar(context) {
   return PreferredSize(
     preferredSize: const Size(double.infinity, kToolbarHeight),
     child: ClipRRect(
@@ -350,9 +352,13 @@ PreferredSize defaultAppBar(context, HomeCubit cubit, {required String title}) {
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(99),
                   ),
-                  child: Text(
-                    ' ${cubit.cart.length} ',
-                    style: Theme.of(context).textTheme.caption,
+                  child: BlocBuilder<HomeCubit, HomeState>(
+                    builder: (context, state) {
+                      return Text(
+                        ' ${context.read<HomeCubit>().cart.length} ',
+                        style: Theme.of(context).textTheme.caption,
+                      );
+                    },
                   ),
                 ),
               ],

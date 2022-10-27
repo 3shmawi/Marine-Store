@@ -26,7 +26,36 @@ class CartScreen extends StatelessWidget {
           backgroundColor: Colors.grey[200],
           extendBodyBehindAppBar: true,
           appBar: defaultAppBarWithoutAnything(context),
-          body: ListView.builder(
+          body: cubit.cart.isEmpty?Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/cart.png',
+                ),
+
+                Text(
+                  'The  Cart  is  empty!',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .caption!
+                      .copyWith(fontSize: 25),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'Add Some products.',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .caption!
+                      .copyWith(fontSize: 20),
+                ),
+              ],
+            ),
+          ):ListView.builder(
             itemBuilder: (context, index) {
               return Stack(
                 alignment: AlignmentDirectional.bottomEnd,

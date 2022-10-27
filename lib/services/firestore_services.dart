@@ -17,6 +17,14 @@ class FirestoreServices {
     await reference.set(data);
   }
 
+  Future<void> updateData({
+    required String path,
+    required String id,
+    required Map<String, dynamic> data,
+  }) {
+    return _fireStore.collection(path).doc(id).update(data);
+  }
+
   Future<void> deleteData({required String path}) async {
     final reference = _fireStore.doc(path);
     debugPrint('Path: $path');

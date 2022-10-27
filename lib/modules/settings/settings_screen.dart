@@ -1,7 +1,9 @@
+import 'package:beauty_supplies_project/admin_screens/admin_settings_screen/admin_settings_screen.dart';
 import 'package:beauty_supplies_project/modules/auth/register/register_screen.dart';
 import 'package:beauty_supplies_project/services/cache_helper_services.dart';
 import 'package:beauty_supplies_project/shared/components/components.dart';
 import 'package:beauty_supplies_project/shared/icon/icons.dart';
+import 'package:beauty_supplies_project/utilities/app_routes.dart';
 import 'package:beauty_supplies_project/utilities/enums.dart';
 import 'package:flutter/material.dart';
 
@@ -75,46 +77,19 @@ class SettingScreen extends StatelessWidget {
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
-                  children: List.generate(
-                    15,
-                    (index) => InkWell(
-                      onTap: () {},
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(15.0, 15.0, 10.0, 15.0),
-                          child: Row(
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'My Orders',
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    'Already have 3 orders',
-                                    style: Theme.of(context).textTheme.caption,
-                                  ),
-                                ],
-                              ),
-                              const Spacer(),
-                              const Icon(
-                                IconBroken.arrowRight2,
-                                color: Colors.black,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                  children: [
+                    DefaultButton(
+                      title: 'My Orders',
+                      onTap: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          AppRoutes.adminLayout,
+                          (route) => false,
+                        );
+                      },
+                      subTitle: 'Already have 3 orders',
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),
@@ -132,7 +107,7 @@ class SettingScreen extends StatelessWidget {
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>  SignUpScreen(),
+                            builder: (context) => SignUpScreen(),
                           ),
                           (route) => false);
                     }).catchError((error) {

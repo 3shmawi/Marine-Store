@@ -1,14 +1,16 @@
 class UserModel {
   final String id;
   final String name;
-final String email;
+  final String email;
   final String imgUrl;
+  final bool isAdmin;
 
   UserModel({
     required this.id,
     required this.name,
     required this.email,
     required this.imgUrl,
+    required this.isAdmin,
   });
 
   Map<String, dynamic> toMap() {
@@ -17,6 +19,7 @@ final String email;
       'name': name,
       'email': email,
       'imgUrl': imgUrl,
+      'isAdmin': isAdmin,
     };
   }
 
@@ -26,6 +29,7 @@ final String email;
       name: map['name'] as String,
       email: map['email'] as String,
       imgUrl: map['imgUrl'] as String,
+      isAdmin: map['isAdmin'] as bool,
     );
   }
 }

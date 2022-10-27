@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+import 'package:beauty_supplies_project/models/category.dart';
 import 'package:beauty_supplies_project/models/product.dart';
 import 'package:beauty_supplies_project/shared/color/colors.dart';
 import 'package:beauty_supplies_project/shared/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../modules/categories/cubit/categories_cubit.dart';
+import '../../modules/categories/cubit/categories_state.dart';
 import 'cubit/admin_upload_product_cubit.dart';
 import 'cubit/admin_upload_product_state.dart';
 
@@ -20,14 +23,7 @@ class AdminViewUploadProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var formKey = GlobalKey<FormState>();
-    // List of items in our dropdown menu
-    var items = [
-      'البويات',
-      'Item 2',
-      'Item 3',
-      'Item 4',
-      'Item 5',
-    ];
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: defaultAppBarWithoutAnything(context),
@@ -43,11 +39,14 @@ class AdminViewUploadProduct extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: BlocBuilder<AdminUploadProductViewCubit, AdminUploadProductViewState>(
+                  child: BlocBuilder<AdminUploadProductViewCubit,
+                      AdminUploadProductViewState>(
                     builder: (context, state) {
                       return InkWell(
                         onTap: () {
-                          context.read<AdminUploadProductViewCubit>().pickImageBase64();
+                          context
+                              .read<AdminUploadProductViewCubit>()
+                              .pickImageBase64();
                         },
                         borderRadius: BorderRadius.circular(10),
                         child: Container(
@@ -60,7 +59,9 @@ class AdminViewUploadProduct extends StatelessWidget {
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: context.read<AdminUploadProductViewCubit>().base64String !=
+                          child: context
+                                      .read<AdminUploadProductViewCubit>()
+                                      .base64String !=
                                   null
                               ? Container(
                                   padding: const EdgeInsets.all(1),
@@ -158,41 +159,76 @@ class AdminViewUploadProduct extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       height: 55,
-                      child: BlocBuilder<AdminUploadProductViewCubit, AdminUploadProductViewState>(
-                        builder: (context, state) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15.0, vertical: 10),
-                            child: DropdownButton(
-                              borderRadius: BorderRadius.circular(15),
-                              alignment: AlignmentDirectional.center,
-                              value: context
-                                  .read<AdminUploadProductViewCubit>()
-                                  .selectedCategory,
-                              elevation: 15,
-                              underline: Container(),
-                              isExpanded: true,
-                              focusColor: Colors.grey,
-                              // Down Arrow Icon
-                              icon: const Icon(Icons.keyboard_arrow_down),
-                              dropdownColor: Colors.grey[300],
-                              // Array list of items
-                              items: items.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(items),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15.0, vertical: 10),
+                        child: BlocBuilder<CategoriesCubit, CategoriesState>(
+                          builder: (context, state) {
+                            return StreamBuilder<List<CategoryModel>>(
+                              stream: context
+                                  .read<CategoriesCubit>()
+                                  .categoryStream(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.active) {
+                                  final category = snapshot.data;
+                                  if (category == null || category.isEmpty) {
+                                    return const Center(
+                                      child: Text(
+                                        'No Category Available yet!',
+                                      ),
+                                    );
+                                  }
+
+                                  return BlocBuilder<
+                                      AdminUploadProductViewCubit,
+                                      AdminUploadProductViewState>(
+                                    builder: (context, state) {
+                                      String categoryItem = context
+                                          .read<AdminUploadProductViewCubit>()
+                                          .selectedCategory;
+                                      if(categoryItem == '') {
+                                        categoryItem = category[0].name;
+                                      }
+                                      return DropdownButton(
+                                        borderRadius: BorderRadius.circular(15),
+                                        alignment: AlignmentDirectional.center,
+                                        value: categoryItem,
+                                        elevation: 15,
+                                        underline: Container(),
+                                        isExpanded: true,
+                                        focusColor: Colors.grey,
+                                        // Down Arrow Icon
+                                        icon: const Icon(
+                                            Icons.keyboard_arrow_down),
+                                        dropdownColor: Colors.grey[300],
+                                        items: List.generate(
+                                          category.length,
+                                          (index) => DropdownMenuItem(
+                                            value: category[index].name,
+                                            child: Text(category[index].name),
+                                          ),
+                                        ),
+                                        // After selecting the desired option,it will
+                                        // change button value to selected value
+                                        onChanged: (String? category) {
+                                          context
+                                              .read<
+                                                  AdminUploadProductViewCubit>()
+                                              .changeSelectedCategory(
+                                                  category!);
+                                        },
+                                      );
+                                    },
+                                  );
+                                }
+                                return const Center(
+                                  child: CircularProgressIndicator(),
                                 );
-                              }).toList(),
-                              // After selecting the desired option,it will
-                              // change button value to selected value
-                              onChanged: (String? category) {
-                                context
-                                    .read<AdminUploadProductViewCubit>()
-                                    .changeSelectedCategory(category!);
                               },
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ],
@@ -234,10 +270,13 @@ class AdminViewUploadProduct extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: BlocConsumer<AdminUploadProductViewCubit, AdminUploadProductViewState>(
+                  child: BlocConsumer<AdminUploadProductViewCubit,
+                      AdminUploadProductViewState>(
                     listener: (context, state) {
                       if (state is AdminViewPostProductSuccessState) {
-                        context.read<AdminUploadProductViewCubit>().resetBase64();
+                        context
+                            .read<AdminUploadProductViewCubit>()
+                            .resetBase64();
                         priceController.clear();
                         discountController.clear();
                         titleController.clear();
@@ -302,8 +341,11 @@ class AdminViewUploadProduct extends StatelessWidget {
                 description: descriptionController.text,
                 title: titleController.text,
                 price: int.parse(priceController.text),
-                imgUrl: context.read<AdminUploadProductViewCubit>().base64String!,
-                category: context.read<AdminUploadProductViewCubit>().selectedCategory,
+                imgUrl:
+                    context.read<AdminUploadProductViewCubit>().base64String!,
+                category: context
+                    .read<AdminUploadProductViewCubit>()
+                    .selectedCategory,
                 discountValue: discountController.text.isEmpty
                     ? 0
                     : int.parse(discountController.text),

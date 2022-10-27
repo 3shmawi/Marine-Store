@@ -50,7 +50,7 @@ class AdminUploadProductViewCubit extends Cubit<AdminUploadProductViewState> {
     }
   }
 
-  String selectedCategory = 'البويات';
+  String selectedCategory = '';
 
   void changeSelectedCategory(String newCategory) {
     selectedCategory = newCategory;
@@ -76,7 +76,9 @@ class AdminUploadProductViewCubit extends Cubit<AdminUploadProductViewState> {
             ),
             data: product.toMap())
         .then((value) {
-      emit(AdminViewPostProductSuccessState());
+      _service.setData(path: 'products', data: product.toMap()).then((value) {
+        emit(AdminViewPostProductSuccessState());
+      });
     }).catchError((error) {
       emit(AdminViewPostProductErrorState());
     });
@@ -102,16 +104,17 @@ class AdminUploadProductViewCubit extends Cubit<AdminUploadProductViewState> {
       discountValue: discountValue,
     );
     _service
-        .setData(
-            path: FirebaseCollectionPath.addAdminProduct(
-              adminId: id,
-              newId: id,
-            ),
-            data: product.toMap())
+        .updateData(path: 'products', id: id, data: product.toMap())
         .then((value) {
       emit(AdminViewEditPostProductSuccessState());
     }).catchError((error) {
       emit(AdminViewEditPostProductErrorState());
     });
+  }
+
+  void deleteProduct(String id) {
+    _service.deleteData(
+      path: FirebaseCollectionPath.deleteAdminProducts(id),
+    );
   }
 }
