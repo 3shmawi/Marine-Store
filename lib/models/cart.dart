@@ -1,21 +1,23 @@
+import 'package:beauty_supplies_project/models/product.dart';
+
 class CartModel {
-  String? image;
+  ProductModel? productModel;
   int number = 1;
 
   CartModel({
-    required this.image,
+    required this.productModel,
     required this.number,
   });
 
   CartModel.fromJson(Map<String, dynamic>? json) {
     number = json!['number'] ?? 1;
-    image = json['image'];
+    productModel = ProductModel.fromMapWithoutId(json['productModel']);
   }
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['number'] = number;
-    data['image'] = image;
+    data['productModel'] = productModel!.toMap();
     return data;
   }
 }

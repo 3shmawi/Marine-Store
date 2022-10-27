@@ -6,17 +6,32 @@ class AdminViewPickedImagesSuccessState extends AdminUploadProductViewState {}
 
 class AdminViewPickedImageErrorState extends AdminUploadProductViewState {}
 
-class AdminViewPostProductLoadingState extends AdminUploadProductViewState {}
+class AdminViewPostProductAtAdminPathLoadingState
+    extends AdminUploadProductViewState {}
 
-class AdminViewPostProductSuccessState extends AdminUploadProductViewState {}
+class AdminViewPostProductAtAdminPathSuccessState
+    extends AdminUploadProductViewState {}
 
-class AdminViewPostProductErrorState extends AdminUploadProductViewState {}
+class AdminViewPostProductAtAdminPathErrorState
+    extends AdminUploadProductViewState {}
 
-class AdminViewEditPostProductLoadingState extends AdminUploadProductViewState {}
+class AdminViewPostProductAtProductsPathLoadingState
+    extends AdminUploadProductViewState {}
 
-class AdminViewEditPostProductSuccessState extends AdminUploadProductViewState {}
+class AdminViewPostProductAtProductsPathSuccessState
+    extends AdminUploadProductViewState {}
 
-class AdminViewEditPostProductErrorState extends AdminUploadProductViewState {}
+class AdminViewPostProductAtProductsPathErrorState
+    extends AdminUploadProductViewState {}
+
+class AdminViewPostProductAtCategoryPathLoadingState
+    extends AdminUploadProductViewState {}
+
+class AdminViewPostProductAtCategoryPathSuccessState
+    extends AdminUploadProductViewState {}
+
+class AdminViewPostProductAtCategoryPathErrorState
+    extends AdminUploadProductViewState {}
 
 class AdminViewChangeSelectedCategoryState extends AdminUploadProductViewState {
 }

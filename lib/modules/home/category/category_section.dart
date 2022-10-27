@@ -6,7 +6,6 @@ import '../../../models/category.dart';
 import '../../../shared/color/colors.dart';
 import '../../../utilities/app_routes.dart';
 
-
 class CategorySection extends StatelessWidget {
   const CategorySection({Key? key}) : super(key: key);
 
@@ -15,7 +14,7 @@ class CategorySection extends StatelessWidget {
     return SizedBox(
       height: 154,
       child: StreamBuilder<List<CategoryModel>>(
-        stream: FireStoreDataBase().categoryStream(),
+        stream: FireStoreDataBase().getCategoryStream(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             final category = snapshot.data;
@@ -60,7 +59,8 @@ class CategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, AppRoutes.categoryOnePageRoute);
+        Navigator.pushNamed(context, AppRoutes.categoryOnePageRoute,
+            arguments: category[index].name);
       },
       child: Container(
         clipBehavior: Clip.antiAliasWithSaveLayer,

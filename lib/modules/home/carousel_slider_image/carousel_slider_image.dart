@@ -11,7 +11,7 @@ class CarouselSliderImageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<CarouselSliderModel>>(
-      stream: FireStoreDataBase().carouselSliderImagesStream(),
+      stream: FireStoreDataBase().getCarouselSliderImagesStream(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           var images = snapshot.data;

@@ -20,24 +20,28 @@ class CartScreen extends StatelessWidget {
       },
       builder: (context, state) {
         var cubit = HomeCubit.get(context);
-        double w = MediaQuery.of(context).size.width;
+        double w = MediaQuery
+            .of(context)
+            .size
+            .width;
 
         return Scaffold(
           backgroundColor: Colors.grey[200],
           extendBodyBehindAppBar: true,
           appBar: defaultAppBarWithoutAnything(context),
-          body: cubit.cart.isEmpty?Center(
+          body: cubit.cart.isEmpty
+              ? Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
                   'assets/images/cart.png',
                 ),
-
                 Text(
                   'The  Cart  is  empty!',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context)
+                  style: Theme
+                      .of(context)
                       .textTheme
                       .caption!
                       .copyWith(fontSize: 25),
@@ -48,32 +52,41 @@ class CartScreen extends StatelessWidget {
                 Text(
                   'Add Some products.',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context)
+                  style: Theme
+                      .of(context)
                       .textTheme
                       .caption!
                       .copyWith(fontSize: 20),
                 ),
               ],
             ),
-          ):ListView.builder(
+          )
+              : ListView.builder(
             itemBuilder: (context, index) {
               return Stack(
                 alignment: AlignmentDirectional.bottomEnd,
                 children: [
                   DefaultFavoriteCard(
-                    onTap: () {
-                      Navigator.pushNamed(
-                          context, AppRoutes.productDetailPageRoute,arguments: cubit.cart[index].image);
-                    },
-                    image: cubit.cart[index].image!,
-                    title: 'Title',
-                    subTitle: '${cubit.cart[index].number}',
+                    onTap: () {},
+                    image: cubit.cart[index].productModel!.imgUrl,
+                    title: cubit.cart[index].productModel!.title,
+                    subTitle: cubit.cart[index].productModel!.discountValue!
+                        .toDouble() > 0
+                        ?
+                    '${cubit.cart[index].productModel!.price *
+                        cubit.cart[index].number * cubit.cart[index]
+                        .productModel!.discountValue!.toDouble() / 100} \$'
+                        : '${cubit.cart[index].productModel!.price *
+                        cubit.cart[index].number} \$',
+
+                    price: '${cubit.cart[index].number}',
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 10.0, right: 30),
+                        padding: const EdgeInsets.only(
+                            bottom: 10.0, right: 30),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -91,12 +104,13 @@ class CartScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Padding(
-                            padding:
-                                const EdgeInsets.only(bottom: 30.0, right: 5),
+                            padding: const EdgeInsets.only(
+                                bottom: 30.0, right: 5),
                             child: DefaultIconButton(
                               onTap: () {
                                 if (cubit.cart[index].number > 1) {
-                                  cubit.changeCountOfProductNumberDEc(index);
+                                  cubit.changeCountOfProductNumberDEc(
+                                      index);
                                 }
                               },
                               iconData: Icons.remove,
@@ -104,11 +118,12 @@ class CartScreen extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.only(bottom: 30.0, right: 30),
+                            padding: const EdgeInsets.only(
+                                bottom: 30.0, right: 30),
                             child: DefaultIconButton(
                               onTap: () {
-                                cubit.changeCountOfProductNumberInc(index);
+                                cubit
+                                    .changeCountOfProductNumberInc(index);
                               },
                               iconData: Icons.add,
                               color: defaultColor,

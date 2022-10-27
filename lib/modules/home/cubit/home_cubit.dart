@@ -1,4 +1,5 @@
 import 'package:beauty_supplies_project/models/cart.dart';
+import 'package:beauty_supplies_project/models/product.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'home_state.dart';
@@ -8,29 +9,30 @@ class HomeCubit extends Cubit<HomeState> {
 
   static HomeCubit get(context) => BlocProvider.of(context);
 
-  List<String> fav = [];
+  List<ProductModel> fav = [];
 
-  void changeFavoriteState(String image) {
-    if (fav.contains(image)) {
-      removeProductFromFavorite(image);
+  void changeFavoriteState(ProductModel product) {
+    if (fav.contains(product)) {
+      removeProductFromFavorite(product);
     } else {
-      addProductToFavorite(image);
+      addProductToFavorite(product);
     }
 
     emit(ChangeFavState());
   }
 
-  void addProductToFavorite(String image) {
-    fav.add(image);
+  void addProductToFavorite(ProductModel product) {
+    fav.add(product);
   }
 
-  void removeProductFromFavorite(String image) {
-    fav.remove(image);
+  void removeProductFromFavorite(ProductModel product) {
+    fav.remove(product);
   }
 
   List<CartModel> cart = [];
 
   void changeCartState(CartModel cartModel) {
+
     if (cart.contains(cartModel)) {
       removeProductFromCart(cartModel);
     } else {
@@ -57,9 +59,4 @@ class HomeCubit extends Cubit<HomeState> {
     cart[index].number -= 1;
     emit(ChangeCartNumberCountDecState());
   }
-
-
-
-
-
 }

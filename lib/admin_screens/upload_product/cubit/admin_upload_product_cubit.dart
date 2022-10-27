@@ -3,8 +3,10 @@ import 'dart:io';
 
 import 'package:beauty_supplies_project/models/product.dart';
 import 'package:beauty_supplies_project/services/firestore_services.dart';
+import 'package:beauty_supplies_project/shared/components/components.dart';
 import 'package:beauty_supplies_project/utilities/constants.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -66,55 +68,88 @@ class AdminUploadProductViewCubit extends Cubit<AdminUploadProductViewState> {
     emit(AdminViewCreateNewIdState());
   }
 
-  void postProduct(ProductModel product) {
-    emit(AdminViewPostProductLoadingState());
+  void setProductAtPathAdmin(ProductModel productModel) {
+    emit(AdminViewPostProductAtAdminPathLoadingState());
+
     _service
         .setData(
-            path: FirebaseCollectionPath.addAdminProduct(
-              adminId: userId!,
-              newId: newId!,
+            path: FirebaseCollectionPath.setAdminProducts(
+              newId!,
             ),
-            data: product.toMap())
+            data: productModel.toMap())
         .then((value) {
-      _service.setData(path: 'products', data: product.toMap()).then((value) {
-        emit(AdminViewPostProductSuccessState());
+      emit(AdminViewPostProductAtAdminPathSuccessState());
+      _service
+          .setData(
+              path: FirebaseCollectionPath.setProductsAtProductsPath(productModel.id),
+              data: productModel.toMap())
+          .then((value) {
+        emit(AdminViewPostProductAtProductsPathSuccessState());
+        _service
+            .setData(
+                path: FirebaseCollectionPath.setProductsAtCategoryProductsPath(
+                  productModel.category,
+                  productModel.id,
+                ),
+                data: productModel.toMap())
+            .then((value) {
+          emit(AdminViewPostProductAtCategoryPathSuccessState());
+        }).catchError((error) {
+          showToast(text: error.toString(), color: Colors.red);
+          print('errorrrrrrrrrrrrrrr1${error.toString()}');
+          emit(AdminViewPostProductAtCategoryPathErrorState());
+        });
+      }).catchError((error) {
+        showToast(text: error.toString(), color: Colors.red);
+        print('errorrrrrrrrrrrrrrr2${error.toString()}');
+
+        emit(AdminViewPostProductAtProductsPathErrorState());
       });
     }).catchError((error) {
-      emit(AdminViewPostProductErrorState());
+      print('errorrrrrrrrrrrrrrr3${error.toString()}');
+
+      showToast(text: error.toString(), color: Colors.red);
+      emit(AdminViewPostProductAtAdminPathErrorState());
     });
   }
 
-  void editProduct({
-    required String id,
-    required String title,
-    required int price,
-    required int discountValue,
-    required String imgUrl,
-    required String description,
-    required String category,
-  }) {
-    emit(AdminViewEditPostProductLoadingState());
-    ProductModel product = ProductModel(
-      id: id,
-      title: title,
-      price: price,
-      imgUrl: imgUrl,
-      description: description,
-      category: category,
-      discountValue: discountValue,
-    );
+  // void setProductAtPathProducts(ProductModel productModel) {
+  //   emit(AdminViewPostProductAtProductsPathLoadingState());
+  //
+  //
+  // }
+  //
+  // void setProductAtPathCategory(ProductModel productModel) {
+  //   emit(AdminViewPostProductAtCategoryPathLoadingState());
+  //
+  //
+  // }
+  //
+  // void postProduct(ProductModel productModel) {
+  //   setProductAtPathAdmin(productModel);
+  //   setProductAtPathProducts(productModel);
+  //   setProductAtPathCategory(productModel);
+  // }
+
+  void deleteProduct(String productId, String category) {
     _service
-        .updateData(path: 'products', id: id, data: product.toMap())
+        .deleteData(
+      path: FirebaseCollectionPath.deleteAdminProduct(productId),
+    )
         .then((value) {
-      emit(AdminViewEditPostProductSuccessState());
-    }).catchError((error) {
-      emit(AdminViewEditPostProductErrorState());
+      showToast(text: 'Product deleted successfully', color: Colors.red);
+      _service
+          .deleteData(
+        path: FirebaseCollectionPath.deleteProductFromAllProducts(productId),
+      )
+          .then((value) {
+        _service
+            .deleteData(
+              path: FirebaseCollectionPath.deleteProductFromCategories(
+                  category, productId),
+            )
+            .then((value) {});
+      });
     });
-  }
-
-  void deleteProduct(String id) {
-    _service.deleteData(
-      path: FirebaseCollectionPath.deleteAdminProducts(id),
-    );
   }
 }

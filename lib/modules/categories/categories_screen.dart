@@ -1,3 +1,6 @@
+import 'package:beauty_supplies_project/database/database_controller.dart';
+import 'package:beauty_supplies_project/models/cart.dart';
+import 'package:beauty_supplies_project/models/category.dart';
 import 'package:beauty_supplies_project/shared/components/components.dart';
 import 'package:beauty_supplies_project/utilities/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -16,91 +19,60 @@ class CategoriesScreen extends StatelessWidget {
       body: Stack(
         children: [
           /// ListView
-          ListView(
-            physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics(),
+          Center(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 100.0),
+                child: StreamBuilder<List<CategoryModel>>(
+                  stream: FireStoreDataBase().getCategoryStream(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      var category = snapshot.data;
+                      if (category == null || category.isEmpty) {
+                        return Center(
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                'assets/images/sala.png',
+                                height: 200,
+                                width: double.infinity,
+                              ),
+                              Text(
+                                'No Products founded yet!',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .caption!
+                                    .copyWith(fontSize: 25),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      return Wrap(
+                        alignment: WrapAlignment.center,
+                        children: List.generate(
+                          category.length,
+                          (index) => Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: DefaultCategoryPageCard(
+                              color: Colors.green,
+                              icon: Icons.add,
+                              title: category[index].name,
+                              onTap: () {},
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                ),
+              ),
             ),
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(w / 17, w / 20, 0, w / 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Browse our Categories\nWe hope to find u need',
-                      style: TextStyle(
-                        fontSize: 19,
-                        color: Colors.black.withOpacity(.5),
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.start,
-                    ),
-                  ],
-                ),
-              ),
-              DefaultTwoCategoryInRow(
-                title: 'البويات',
-                title2: 'كيماويات التنظيف',
-                icon: IconBroken.swap,
-                icon2: IconBroken.shieldFail,
-                color: const Color(0xfff37736),
-                color2: const Color(0xfff37736),
-                onTap: () {
-                  Navigator.pushNamed(context, AppRoutes.categoryOnePageRoute);
-                },
-                onTap2: () {},
-              ),
-              DefaultTwoCategoryInRow(
-                title: 'مواتير',
-                title2: 'قطع الغيارات',
-                icon: IconBroken.swap,
-                icon2: IconBroken.shieldFail,
-                color: const Color(0xfff37736),
-                color2: const Color(0xfff37736),
-                onTap: () {},
-                onTap2: () {},
-              ),
-              DefaultTwoCategoryInRow(
-                title: 'الاكسسوارات',
-                title2: 'مهمات الامان',
-                icon: IconBroken.swap,
-                icon2: IconBroken.shieldFail,
-                color: const Color(0xfff37736),
-                color2: const Color(0xfff37736),
-                onTap: () {},
-                onTap2: () {},
-              ),
-              DefaultTwoCategoryInRow(
-                title: 'خامات البدن',
-                title2: 'الاصلاح والبناء',
-                icon: IconBroken.swap,
-                icon2: IconBroken.shieldFail,
-                color: const Color(0xfff37736),
-                color2: const Color(0xfff37736),
-                onTap: () {},
-                onTap2: () {},
-              ),
-              DefaultTwoCategoryInRow(
-                title: 'المراجعة',
-                title2: 'الاستشارات',
-                icon: IconBroken.wallet,
-                icon2: IconBroken.shieldFail,
-                color: const Color(0xfff37736),
-                color2: const Color(0xfff37736),
-                onTap: () {},
-                onTap2: () {},
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: w / 17),
-                child: DefaultCategoryPageCard(
-                  title: 'خدمات',
-                  icon: IconBroken.hide,
-                  color: const Color(0xfff37736),
-                  onTap: () {},
-                ),
-              ),
-              SizedBox(height: w / 20),
-            ],
           ),
           Padding(
             padding: const EdgeInsets.only(top: 50.0, right: 20),

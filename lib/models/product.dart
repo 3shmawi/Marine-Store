@@ -48,6 +48,17 @@ class ProductModel {
       category: map['category'] as String,
       rate: map['rate'] as int,
     );
+  }factory ProductModel.fromMapWithoutId(Map<String, dynamic> map) {
+    return ProductModel(
+      id: map['id'] as String,
+      title: map['title'] as String,
+      price: map['price'] as int,
+      imgUrl: map['imgUrl'] as String,
+      description: map['description'] as String,
+      discountValue: map['discountValue'] as int,
+      category: map['category'] as String,
+      rate: map['rate'] as int,
+    );
   }
 }
 

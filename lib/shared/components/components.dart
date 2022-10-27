@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:beauty_supplies_project/modules/home/cubit/home_cubit.dart';
 import 'package:beauty_supplies_project/modules/home/cubit/home_state.dart';
 import 'package:beauty_supplies_project/shared/color/colors.dart';
@@ -517,6 +519,8 @@ class DefaultFavoriteCard extends StatelessWidget {
   final String title;
   final String subTitle;
   final GestureTapCallback onTap;
+  final bool isFavCart;
+  final String price;
 
   const DefaultFavoriteCard({
     Key? key,
@@ -524,6 +528,8 @@ class DefaultFavoriteCard extends StatelessWidget {
     required this.image,
     required this.title,
     required this.subTitle,
+    this.isFavCart = false,
+    this.price = '',
   }) : super(key: key);
 
   @override
@@ -557,14 +563,23 @@ class DefaultFavoriteCard extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: Colors.white.withOpacity(.2),
                       borderRadius: BorderRadius.circular(15)),
-                  child: Image(
-                    image: CachedNetworkImageProvider(
-                      image,
-                    ),
-                    // height: 120.0,
-                    // width: 150.0,
-                    fit: BoxFit.cover,
-                  ),
+                  child: image.startsWith('https://')
+                      ? Image(
+                          image: CachedNetworkImageProvider(
+                            image,
+                          ),
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          height: 200,
+                        )
+                      : Image.memory(
+                          base64Decode(
+                            image,
+                          ),
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          height: 200,
+                        ),
                 ),
                 SizedBox(width: w / 40),
                 SizedBox(
@@ -598,10 +613,12 @@ class DefaultFavoriteCard extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
+                      const SizedBox(height: 5,),
                       Text(
-                        'Tap to know more',
+                        isFavCart ? 'Tap to know more' : price,
                         maxLines: 1,
                         softWrap: true,
+
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.caption,
                       ),

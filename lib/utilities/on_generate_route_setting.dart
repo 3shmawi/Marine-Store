@@ -1,10 +1,12 @@
 import 'package:beauty_supplies_project/layout/admin_layout/admin_layout_screen.dart';
 import 'package:beauty_supplies_project/layout/usr_layout/usr_layout_screen.dart';
 import 'package:beauty_supplies_project/models/cart.dart';
+import 'package:beauty_supplies_project/models/product.dart';
 import 'package:beauty_supplies_project/modules/auth/login/login_screen.dart';
 import 'package:beauty_supplies_project/modules/cart/cart_screen.dart';
 import 'package:beauty_supplies_project/modules/home/home_screen.dart';
-import 'package:beauty_supplies_project/modules/products/products_screen.dart';
+import 'package:beauty_supplies_project/modules/product_detail/product_details_screen.dart';
+
 import 'package:flutter/cupertino.dart';
 import '../modules/auth/register/register_screen.dart';
 import '../modules/category_products/category_products_screen.dart';
@@ -16,8 +18,8 @@ Route<dynamic> onGenerate(RouteSettings settings) {
       return CupertinoPageRoute(
         builder: (_) {
           return ProductDetailsScreen(
-            cartModel:
-                CartModel(image: settings.arguments as String, number: 1),
+            product:
+                CartModel(productModel: settings.arguments as ProductModel, number: 1),
           );
         },
         settings: settings,
@@ -36,7 +38,9 @@ Route<dynamic> onGenerate(RouteSettings settings) {
       );
     case AppRoutes.categoryOnePageRoute:
       return CupertinoPageRoute(
-        builder: (_) => const CategoryProducts(),
+        builder: (_) =>  CategoryProducts(
+          category: settings.arguments as String,
+        ),
         settings: settings,
       );
     case AppRoutes.cartPageRoute:

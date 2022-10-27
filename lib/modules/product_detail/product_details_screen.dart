@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:beauty_supplies_project/models/cart.dart';
+
 import 'package:beauty_supplies_project/modules/home/cubit/home_cubit.dart';
+import 'package:beauty_supplies_project/shared/color/colors.dart';
 import 'package:beauty_supplies_project/shared/components/components.dart';
 import 'package:beauty_supplies_project/shared/icon/icons.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,11 +15,11 @@ import '../../utilities/app_routes.dart';
 import '../home/cubit/home_state.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
-  final CartModel cartModel;
+  final CartModel product;
 
   const ProductDetailsScreen({
     Key? key,
-    required this.cartModel,
+    required this.product,
   }) : super(key: key);
 
   @override
@@ -43,9 +47,9 @@ class ProductDetailsScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 30.0),
-                            const Text(
-                              'Yacht',
-                              style: TextStyle(
+                            Text(
+                              product.productModel!.category,
+                              style: const TextStyle(
                                 fontSize: 42.0,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFFF17532),
@@ -56,18 +60,29 @@ class ProductDetailsScreen extends StatelessWidget {
                               clipBehavior: Clip.antiAliasWithSaveLayer,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15)),
-                              child: Image(
-                                image: CachedNetworkImageProvider(
-                                  cartModel.image!,
-                                ),
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
+                              child: product.productModel!.imgUrl
+                                      .startsWith('https://')
+                                  ? Image(
+                                      image: CachedNetworkImageProvider(
+                                        product.productModel!.imgUrl,
+                                      ),
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      height: 200,
+                                    )
+                                  : Image.memory(
+                                      base64Decode(
+                                        product.productModel!.imgUrl,
+                                      ),
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      height: 200,
+                                    ),
                             ),
                             const SizedBox(height: 20.0),
-                            const Text(
-                              'Lovers Boat',
-                              style: TextStyle(
+                            Text(
+                              product.productModel!.title,
+                              style: const TextStyle(
                                   color: Color(0xFF575E67), fontSize: 24.0),
                             ),
                             const SizedBox(height: 10.0),
@@ -84,10 +99,10 @@ class ProductDetailsScreen extends StatelessWidget {
                             const SizedBox(height: 20.0),
                             SizedBox(
                               width: MediaQuery.of(context).size.width - 50.0,
-                              child: const Text(
-                                'Set your vacation to the tune of summery delight at Ramses Hilton. Rooted at the core of Egyptian’s metropolis, Cairo, on the east riverbank of the Nile, this majestic hotel is the perfect palatial re...',
+                              child: Text(
+                                product.productModel!.description,
                                 textAlign: TextAlign.start,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16.0,
                                   color: Color(0xFFB4B8B9),
                                 ),
@@ -106,31 +121,30 @@ class ProductDetailsScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: DefaultIconButton(
                             backgroundColor:
-                                cubit.fav.contains(cartModel.image)
+                                cubit.fav.contains(product.productModel)
                                     ? Colors.redAccent
                                     : Colors.black.withOpacity(.09),
-                            color: cubit.fav.contains(cartModel.image)
+                            color: cubit.fav.contains(product.productModel)
                                 ? Colors.white
                                 : Colors.red,
                             onTap: () {
-                              cubit.changeFavoriteState(cartModel.image!);
+                              cubit.changeFavoriteState(product.productModel!);
                             },
                             iconData: IconBroken.heart,
                             size: 13,
                           ),
                         ),
                         Expanded(
-
                           child: DefaultElevatedButton(
                             header: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(
-                                  Icons.add,
+                                 Icon(
+                                  cubit.cart.contains(product)?IconBroken.delete:Icons.add,
                                   size: 16,
                                 ),
                                 Text(
-                                  'Add to Cart',
+                                  cubit.cart.contains(product)?'  Remove from Cart':'Add to Cart',
                                   style: Theme.of(context)
                                       .textTheme
                                       .button!
@@ -139,8 +153,9 @@ class ProductDetailsScreen extends StatelessWidget {
                               ],
                             ),
                             onPressed: () {
-                              cubit.changeCartState(cartModel);
+                              cubit.changeCartState(product);
                             },
+                            color: cubit.cart.contains(product)?Colors.red:defaultColor,
                           ),
                         ),
                       ],

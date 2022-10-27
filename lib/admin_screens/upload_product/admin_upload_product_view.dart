@@ -23,7 +23,7 @@ class AdminViewUploadProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var formKey = GlobalKey<FormState>();
-
+    String categoryItem = '';
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: defaultAppBarWithoutAnything(context),
@@ -184,10 +184,10 @@ class AdminViewUploadProduct extends StatelessWidget {
                                       AdminUploadProductViewCubit,
                                       AdminUploadProductViewState>(
                                     builder: (context, state) {
-                                      String categoryItem = context
+                                      categoryItem = context
                                           .read<AdminUploadProductViewCubit>()
                                           .selectedCategory;
-                                      if(categoryItem == '') {
+                                      if (categoryItem == '') {
                                         categoryItem = category[0].name;
                                       }
                                       return DropdownButton(
@@ -273,7 +273,11 @@ class AdminViewUploadProduct extends StatelessWidget {
                   child: BlocConsumer<AdminUploadProductViewCubit,
                       AdminUploadProductViewState>(
                     listener: (context, state) {
-                      if (state is AdminViewPostProductSuccessState) {
+                      if (state is AdminViewPostProductAtAdminPathLoadingState ||
+                          state
+                          is AdminViewPostProductAtProductsPathLoadingState ||
+                          state
+                          is AdminViewPostProductAtCategoryPathLoadingState) {
                         context
                             .read<AdminUploadProductViewCubit>()
                             .resetBase64();
@@ -284,7 +288,12 @@ class AdminViewUploadProduct extends StatelessWidget {
                         showToast(
                             text: 'Product uploaded successfully',
                             color: Colors.green);
-                      } else if (state is AdminViewPostProductErrorState) {
+                      } else if (state
+                              is AdminViewPostProductAtAdminPathErrorState ||
+                          state
+                              is AdminViewPostProductAtProductsPathErrorState ||
+                          state
+                              is AdminViewPostProductAtCategoryPathErrorState) {
                         showToast(
                           text:
                               'Failed! Please reduce image size or check internet',
@@ -293,7 +302,11 @@ class AdminViewUploadProduct extends StatelessWidget {
                       }
                     },
                     builder: (context, state) {
-                      return state is AdminViewPostProductLoadingState
+                      return (state is AdminViewPostProductAtAdminPathLoadingState ||
+                              state
+                                  is AdminViewPostProductAtProductsPathLoadingState ||
+                              state
+                                  is AdminViewPostProductAtCategoryPathLoadingState)
                           ? const Center(
                               child: CircularProgressIndicator(),
                             )
@@ -307,8 +320,8 @@ class AdminViewUploadProduct extends StatelessWidget {
                                       color: Colors.white,
                                     ),
                               ),
-                              onPressed: () =>
-                                  submitConditions(formKey, context),
+                              onPressed: () => submitConditions(
+                                  formKey, context, categoryItem),
                             );
                     },
                   ),
@@ -321,7 +334,8 @@ class AdminViewUploadProduct extends StatelessWidget {
     );
   }
 
-  void submitConditions(GlobalKey<FormState> formKey, BuildContext context) {
+  void submitConditions(
+      GlobalKey<FormState> formKey, BuildContext context, String category) {
     context.read<AdminUploadProductViewCubit>().createNewIdState();
     if (formKey.currentState!.validate()) {
       if (context.read<AdminUploadProductViewCubit>().base64String == null) {
@@ -335,7 +349,7 @@ class AdminViewUploadProduct extends StatelessWidget {
           checkValue(discountController.text)) {
         showToast(text: 'Invalid Number', color: Colors.red);
       } else {
-        context.read<AdminUploadProductViewCubit>().postProduct(
+        context.read<AdminUploadProductViewCubit>().setProductAtPathAdmin(
               ProductModel(
                 id: context.read<AdminUploadProductViewCubit>().newId!,
                 description: descriptionController.text,
@@ -343,9 +357,7 @@ class AdminViewUploadProduct extends StatelessWidget {
                 price: int.parse(priceController.text),
                 imgUrl:
                     context.read<AdminUploadProductViewCubit>().base64String!,
-                category: context
-                    .read<AdminUploadProductViewCubit>()
-                    .selectedCategory,
+                category: category,
                 discountValue: discountController.text.isEmpty
                     ? 0
                     : int.parse(discountController.text),

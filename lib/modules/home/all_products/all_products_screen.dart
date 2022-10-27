@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:beauty_supplies_project/modules/home/cubit/home_cubit.dart';
 import 'package:beauty_supplies_project/modules/home/cubit/home_state.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -18,7 +20,7 @@ class AllProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<ProductModel>>(
-      stream: FireStoreDataBase().allProductsStream(),
+      stream: FireStoreDataBase().getAllProductsStream(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           var product = snapshot.data;
@@ -56,7 +58,7 @@ class AllProducts extends StatelessWidget {
               (index) => InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, AppRoutes.productDetailPageRoute,
-                      arguments: productImages[index]);
+                      arguments: product[index]);
                 },
                 child: Card(
                   clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -67,14 +69,23 @@ class AllProducts extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Image(
-                        image: CachedNetworkImageProvider(
-                          product[index].imgUrl,
-                        ),
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        height: 120,
-                      ),
+                      product[index].imgUrl.startsWith('https://')
+                          ? Image(
+                              image: CachedNetworkImageProvider(
+                                product[index].imgUrl,
+                              ),
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                              height: 120,
+                            )
+                          : Image.memory(
+                              base64Decode(
+                                product[index].imgUrl,
+                              ),
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                              height: 120,
+                            ),
                       Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: Column(
@@ -82,12 +93,52 @@ class AllProducts extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Text(
-                                  'New product',
-                                  style: TextStyle(
-                                    fontSize: 12.0,
-                                    color: defaultColor,
-                                  ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      product[index].title,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium,
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    if (product[index].discountValue == 0)
+                                      Text(
+                                        '${product[index].price}\$',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .caption!
+                                            .copyWith(color: defaultColor),
+                                      ),
+                                    if (product[index].discountValue != 0 &&
+                                        product[index].discountValue != null)
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '${product[index].price * (product[index].discountValue!) / 100}\$   ',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .caption!
+                                                .copyWith(color: defaultColor),
+                                          ),
+                                          Text(
+                                            '${product[index].price}\$',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .caption!
+                                                .copyWith(
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                  ],
                                 ),
                                 const SizedBox(
                                   width: 5.0,
@@ -97,17 +148,16 @@ class AllProducts extends StatelessWidget {
                                   builder: (context, state) {
                                     var cubit = HomeCubit.get(context);
                                     return DefaultIconButton(
-                                      backgroundColor: cubit.fav
-                                              .contains(productImages[index])
-                                          ? Colors.redAccent
-                                          : Colors.black.withOpacity(.09),
-                                      color: cubit.fav
-                                              .contains(productImages[index])
+                                      backgroundColor:
+                                          cubit.fav.contains(product[index])
+                                              ? Colors.redAccent
+                                              : Colors.black.withOpacity(.09),
+                                      color: cubit.fav.contains(product[index])
                                           ? Colors.white
                                           : Colors.red,
                                       onTap: () {
                                         cubit.changeFavoriteState(
-                                            productImages[index]);
+                                            product[index]);
                                       },
                                       iconData: IconBroken.heart,
                                     );

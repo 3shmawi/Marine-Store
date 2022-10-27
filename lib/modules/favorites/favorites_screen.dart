@@ -34,9 +34,9 @@ class FavoritesScreen extends StatelessWidget {
                               context, AppRoutes.productDetailPageRoute,
                               arguments: cubit.fav[index]);
                         },
-                        image: cubit.fav[index],
-                        title: 'Title',
-                        subTitle: 'subTitle',
+                        image: cubit.fav[index].imgUrl,
+                        title: cubit.fav[index].title,
+                        subTitle: cubit.fav[index].category,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,

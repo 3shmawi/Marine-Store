@@ -7,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../database/database_controller.dart';
 import '../../shared/color/colors.dart';
 import '../../shared/components/components.dart';
 import '../../shared/icon/icons.dart';
@@ -20,36 +21,61 @@ class AdminProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: defaultAppBarWithoutAnything(context),
-      body: Center(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 30),
-            child: BlocBuilder<AdminViewAllProductsCubit,
-                AdminViewAllProductsState>(
-              builder: (context, state) {
-                return StreamBuilder<List<ProductModel>>(
-                  stream: context
-                      .read<AdminViewAllProductsCubit>()
-                      .getAllProductsStream(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.active) {
-                      final products = snapshot.data;
-                      if (products == null || products.isEmpty) {
-                        return const Text(
-                          'No Products Available yet!',
-                        );
-                      }
-
+      appBar: defaultAppBar(context),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 30),
+          child: BlocBuilder<AdminViewAllProductsCubit,
+              AdminViewAllProductsState>(
+            builder: (context, state) {
+              return StreamBuilder<List<ProductModel>>(
+                stream: FireStoreDataBase().getAdminProductsStream(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.active) {
+                    final products = snapshot.data;
+                    if (products == null || products.isEmpty) {
                       return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 250,),
+                          Image.asset(
+                            'assets/images/sala.png',
+                            height: 200,
+                            width: double.infinity,
+                          ),
+                          Text(
+                            'No Products Available yet!',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption!
+                                .copyWith(fontSize: 20),
+                          ),Text(
+                            'Upload now!',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption!
+                                .copyWith(fontSize: 20),
+                          ),
+                        ],
+                      );
+
+                    }
+
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 52.0),
+                      child: Column(
                         children: List.generate(
+
                           products.length,
                           (index) => InkWell(
+                            borderRadius: BorderRadius.circular(15),
                             onTap: () {
                               Navigator.pushNamed(
                                   context, AppRoutes.productDetailPageRoute,
-                                  arguments: products[index].imgUrl);
+                                  arguments: products[index]);
                             },
                             child: Stack(
                               children: [
@@ -146,7 +172,7 @@ class AdminProductScreen extends StatelessWidget {
                                                                     decoration:
                                                                         TextDecoration
                                                                             .lineThrough,
-                                                                  )),
+                                                                  ),),
                                                         ],
                                                       ),
                                                   ],
@@ -165,6 +191,8 @@ class AdminProductScreen extends StatelessWidget {
                                                             AdminUploadProductViewCubit>()
                                                         .deleteProduct(
                                                           products[index].id,
+                                                          products[index]
+                                                              .category,
                                                         );
                                                   },
                                                   iconData: IconBroken.delete,
@@ -216,16 +244,17 @@ class AdminProductScreen extends StatelessWidget {
                               ],
                             ),
                           ),
+                          growable: true,
                         ),
-                      );
-                    }
-                    return const Center(
-                      child: CircularProgressIndicator(),
+                      ),
                     );
-                  },
-                );
-              },
-            ),
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              );
+            },
           ),
         ),
       ),
