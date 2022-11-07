@@ -3,6 +3,7 @@ import 'package:beauty_supplies_project/modules/categories/cubit/categories_cubi
 import 'package:beauty_supplies_project/modules/home/all_products/cubit/all_products_cubit.dart';
 import 'package:beauty_supplies_project/modules/home/cubit/home_cubit.dart';
 import 'package:beauty_supplies_project/services/cache_helper_services.dart';
+import 'package:beauty_supplies_project/shared/sqflite_cubit/database_cubit.dart';
 import 'package:beauty_supplies_project/shared/theme/theme_mode.dart';
 import 'package:beauty_supplies_project/task/cubit/cubit.dart';
 import 'package:beauty_supplies_project/utilities/app_routes.dart';
@@ -39,12 +40,15 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => AllProductsCubit()),
         BlocProvider(create: (_) => UsrLayoutCubit()),
-        BlocProvider(create: (_) => HomeCubit()),
+        BlocProvider(
+            create: (_) => DatabaseCubit()
+              ..getAllDataFromFavDataBase()
+              ..getAllDataFromCartDataBase()),
         BlocProvider(create: (_) => CategoriesCubit()),
         BlocProvider(create: (_) => CarouselSliderImagesCubit()),
         BlocProvider(create: (_) => AdminUploadProductViewCubit()),
         BlocProvider(create: (_) => AdminViewAllProductsCubit()),
-
+        BlocProvider(create: (_) => HomeCubit()),
         BlocProvider(create: (_) => AdminLayoutCubit()),
         BlocProvider(create: (_) => CounterTaskCubit()),
       ],

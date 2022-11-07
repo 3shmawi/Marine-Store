@@ -5,6 +5,7 @@ List<String> images = [
   'https://www.boatingmag.com/wp-content/uploads/sites/16/2021/09/BTG0420-BOTY-Axopar-3.jpg',
   'https://global.yamaha-motor.com/business/omdo/products/high-speed-boat/img/high-speed-boat_exteriors_004.jpg',
 ];
+
 List<String> productImages = [
   'https://img.yachtall.com/image-sale-boat/quicksilver-activ-905-weekend-inboard-diesel-huge-3975947b50812209.jpg',
   'https://cdn.boatinternational.com/bi_prd/bi/library_images/oHBmz3yQJC5CmNbYBJJf_lady-christine-helicopter-deck.jpg',
@@ -45,6 +46,7 @@ List<String> categoryNames = [
   'الاستشارات',
   'خدمات',
 ];
+
 List<String> categoryImages = [
   'https://firebasestorage.googleapis.com/v0/b/beauty-supplies-14641.appspot.com/o/WhatsApp%20Image%202022-09-16%20at%2010.47.45%20PM.jpeg?alt=media&token=dc0868cb-2b4d-4cb0-8fbc-c1d842c3d5f8',
   'https://www.un.org/sites/un2.un.org/files/styles/large-article-image-style-16-9/public/field/image/emily_penn_1_crop_4.jpg?itok=hcl8c1Q2',

@@ -81,55 +81,21 @@ class AdminUploadProductViewCubit extends Cubit<AdminUploadProductViewState> {
       emit(AdminViewPostProductAtAdminPathSuccessState());
       _service
           .setData(
-              path: FirebaseCollectionPath.setProductsAtProductsPath(productModel.id),
+              path: FirebaseCollectionPath.setProductsAtProductsPath(
+                  productModel.id),
               data: productModel.toMap())
           .then((value) {
         emit(AdminViewPostProductAtProductsPathSuccessState());
-        _service
-            .setData(
-                path: FirebaseCollectionPath.setProductsAtCategoryProductsPath(
-                  productModel.category,
-                  productModel.id,
-                ),
-                data: productModel.toMap())
-            .then((value) {
-          emit(AdminViewPostProductAtCategoryPathSuccessState());
-        }).catchError((error) {
-          showToast(text: error.toString(), color: Colors.red);
-          print('errorrrrrrrrrrrrrrr1${error.toString()}');
-          emit(AdminViewPostProductAtCategoryPathErrorState());
-        });
       }).catchError((error) {
         showToast(text: error.toString(), color: Colors.red);
-        print('errorrrrrrrrrrrrrrr2${error.toString()}');
 
         emit(AdminViewPostProductAtProductsPathErrorState());
       });
     }).catchError((error) {
-      print('errorrrrrrrrrrrrrrr3${error.toString()}');
-
       showToast(text: error.toString(), color: Colors.red);
       emit(AdminViewPostProductAtAdminPathErrorState());
     });
   }
-
-  // void setProductAtPathProducts(ProductModel productModel) {
-  //   emit(AdminViewPostProductAtProductsPathLoadingState());
-  //
-  //
-  // }
-  //
-  // void setProductAtPathCategory(ProductModel productModel) {
-  //   emit(AdminViewPostProductAtCategoryPathLoadingState());
-  //
-  //
-  // }
-  //
-  // void postProduct(ProductModel productModel) {
-  //   setProductAtPathAdmin(productModel);
-  //   setProductAtPathProducts(productModel);
-  //   setProductAtPathCategory(productModel);
-  // }
 
   void deleteProduct(String productId, String category) {
     _service
@@ -137,18 +103,12 @@ class AdminUploadProductViewCubit extends Cubit<AdminUploadProductViewState> {
       path: FirebaseCollectionPath.deleteAdminProduct(productId),
     )
         .then((value) {
-      showToast(text: 'Product deleted successfully', color: Colors.red);
       _service
           .deleteData(
         path: FirebaseCollectionPath.deleteProductFromAllProducts(productId),
       )
           .then((value) {
-        _service
-            .deleteData(
-              path: FirebaseCollectionPath.deleteProductFromCategories(
-                  category, productId),
-            )
-            .then((value) {});
+        showToast(text: 'Product deleted successfully', color: Colors.red);
       });
     });
   }

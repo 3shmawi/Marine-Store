@@ -1,15 +1,12 @@
-
-
 class ProductModel {
   final String id;
   final String title;
   final int price;
   final String imgUrl;
   final String description;
-  final int? discountValue;
   final String category;
+  final int? discountValue;
   final int? rate;
-
 
   ProductModel({
     required this.id,
@@ -20,7 +17,6 @@ class ProductModel {
     required this.category,
     this.discountValue,
     this.rate,
-
   });
 
   Map<String, dynamic> toMap() {
@@ -33,7 +29,6 @@ class ProductModel {
       'discountValue': discountValue,
       'category': category,
       'rate': rate,
-
     };
   }
 
@@ -48,7 +43,9 @@ class ProductModel {
       category: map['category'] as String,
       rate: map['rate'] as int,
     );
-  }factory ProductModel.fromMapWithoutId(Map<String, dynamic> map) {
+  }
+
+  factory ProductModel.fromMapWithoutId(Map<String, dynamic> map) {
     return ProductModel(
       id: map['id'] as String,
       title: map['title'] as String,

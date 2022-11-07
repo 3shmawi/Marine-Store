@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   CategorySection(),
                   TextHeader(
-                    header: 'New Products',
+                    header: 'All Products',
                   ),
                   AllProducts(),
                 ],
@@ -48,24 +48,4 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class TextHeader extends StatelessWidget {
-  const TextHeader({
-    Key? key,
-    required this.header,
-  }) : super(key: key);
-  final String header;
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Text(
-        header,
-        style: Theme.of(context).textTheme.headline5!.copyWith(
-              fontSize: 25,
-              fontWeight: FontWeight.w700,
-            ),
-      ),
-    );
-  }
-}

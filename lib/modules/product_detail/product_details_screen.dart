@@ -1,21 +1,19 @@
-import 'dart:convert';
-
-import 'package:beauty_supplies_project/models/cart.dart';
-
-import 'package:beauty_supplies_project/modules/home/cubit/home_cubit.dart';
+import 'package:beauty_supplies_project/models/product.dart';
 import 'package:beauty_supplies_project/shared/color/colors.dart';
 import 'package:beauty_supplies_project/shared/components/components.dart';
 import 'package:beauty_supplies_project/shared/icon/icons.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:beauty_supplies_project/shared/sqflite_cubit/database_cubit.dart';
+
+import 'package:beauty_supplies_project/shared/sqflite_cubit/database_state.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+import '../../models/database_model.dart';
 import '../../utilities/app_routes.dart';
-import '../home/cubit/home_state.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
-  final CartModel product;
+  final ProductModel product;
 
   const ProductDetailsScreen({
     Key? key,
@@ -24,127 +22,159 @@ class ProductDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeCubit, HomeState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
-      builder: (context, state) {
-        var cubit = HomeCubit.get(context);
-
-        return Scaffold(
-          extendBodyBehindAppBar: true,
-          body: Stack(
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      body: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 30.0),
+                        Text(
+                          product.category,
+                          style: const TextStyle(
+                            fontSize: 42.0,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFFF17532),
+                          ),
+                        ),
+                        const SizedBox(height: 30.0),
+                        Container(
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: DefaultImageView(
+                            image: product.imgUrl,
+                          ),
+                        ),
+                        const SizedBox(height: 20.0),
+                        Row(
                           children: [
-                            const SizedBox(height: 30.0),
                             Text(
-                              product.productModel!.category,
-                              style: const TextStyle(
-                                fontSize: 42.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFFF17532),
-                              ),
-                            ),
-                            const SizedBox(height: 30.0),
-                            Container(
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: product.productModel!.imgUrl
-                                      .startsWith('https://')
-                                  ? Image(
-                                      image: CachedNetworkImageProvider(
-                                        product.productModel!.imgUrl,
-                                      ),
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                      height: 200,
-                                    )
-                                  : Image.memory(
-                                      base64Decode(
-                                        product.productModel!.imgUrl,
-                                      ),
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                      height: 200,
-                                    ),
-                            ),
-                            const SizedBox(height: 20.0),
-                            Text(
-                              product.productModel!.title,
+                              product.title,
                               style: const TextStyle(
                                   color: Color(0xFF575E67), fontSize: 24.0),
                             ),
-                            const SizedBox(height: 10.0),
-                            RatingBarIndicator(
-                              rating: 2.75,
-                              itemBuilder: (context, index) => const Icon(
-                                Icons.star_border,
-                                color: Colors.amber,
+                            const Spacer(),
+                            if (product.discountValue == 0)
+                              Text(
+                                '${product.price}\$',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .caption!
+                                    .copyWith(
+                                        color: defaultColor, fontSize: 24),
                               ),
-                              itemCount: 5,
-                              itemSize: 25.0,
-                              direction: Axis.horizontal,
-                            ),
-                            const SizedBox(height: 20.0),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width - 50.0,
-                              child: Text(
-                                product.productModel!.description,
-                                textAlign: TextAlign.start,
-                                style: const TextStyle(
-                                  fontSize: 16.0,
-                                  color: Color(0xFFB4B8B9),
-                                ),
+                            if (product.discountValue != 0 &&
+                                product.discountValue != null)
+                              Text(
+                                '${product.price * (product.discountValue!) / 100}\$   ',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .caption!
+                                    .copyWith(
+                                        color: defaultColor, fontSize: 24),
                               ),
-                            ),
                           ],
                         ),
-                      ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10.0),
+                          child: DefaultRatingFromUsr(
+                            onRating: (rate) {},
+                          ),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width - 50.0,
+                          child: Text(
+                            product.description,
+                            textAlign: TextAlign.start,
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              color: Color(0xFFB4B8B9),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 5, 15, 15.0),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: DefaultIconButton(
-                            backgroundColor:
-                                cubit.fav.contains(product.productModel)
-                                    ? Colors.redAccent
-                                    : Colors.black.withOpacity(.09),
-                            color: cubit.fav.contains(product.productModel)
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 5, 15, 15.0),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: BlocBuilder<DatabaseCubit, DatabaseState>(
+                        builder: (context, state) {
+                          var cubit = context.read<DatabaseCubit>();
+                          var productFav = FavProductModel(
+                            productId: product.id,
+                            title: product.title,
+                            category: product.category,
+                            imgUrl: product.imgUrl,
+                            description: product.description,
+                            price: product.price,
+                            discountValue: product.discountValue!,
+                            rate: product.rate!,
+                          );
+                          return DefaultIconButton(
+                            backgroundColor: cubit.isFav(productFav)
+                                ? Colors.redAccent
+                                : Colors.white,
+                            color: cubit.isFav(productFav)
                                 ? Colors.white
-                                : Colors.red,
+                                : defaultColor,
                             onTap: () {
-                              cubit.changeFavoriteState(product.productModel!);
+                              cubit.favoriteButton(productFav);
                             },
                             iconData: IconBroken.heart,
                             size: 13,
-                          ),
-                        ),
-                        Expanded(
-                          child: DefaultElevatedButton(
+                          );
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: BlocBuilder<DatabaseCubit, DatabaseState>(
+                        builder: (context, state) {
+                          var cubit = context.read<DatabaseCubit>();
+                          var cartProduct = CartProductModel(
+                            productId: product.id,
+                            title: product.title,
+                            category: product.category,
+                            imgUrl: product.imgUrl,
+                            description: product.description,
+                            price: product.price,
+                            discountValue: product.discountValue!,
+                            rate: product.rate!,
+                          );
+                          return DefaultElevatedButton(
                             header: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                 Icon(
-                                  cubit.cart.contains(product)?IconBroken.delete:Icons.add,
+                                Icon(
+                                  cubit.isCart(cartProduct)
+                                      ? Icons.check_circle_outline
+                                      : Icons.add,
                                   size: 16,
                                 ),
                                 Text(
-                                  cubit.cart.contains(product)?'  Remove from Cart':'Add to Cart',
+                                  cubit.isCart(cartProduct)
+                                      ? '  Done'
+                                      : 'Add to Cart',
                                   style: Theme.of(context)
                                       .textTheme
                                       .button!
@@ -153,67 +183,74 @@ class ProductDetailsScreen extends StatelessWidget {
                               ],
                             ),
                             onPressed: () {
-                              cubit.changeCartState(product);
+                              cubit.cartButton(cartProduct);
                             },
-                            color: cubit.cart.contains(product)?Colors.red:defaultColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 40.0, right: 25),
-                child: Row(
-                  children: [
-                    const Spacer(),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Stack(
-                          alignment: AlignmentDirectional.topEnd,
-                          children: [
-                            DefaultIconButton(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, AppRoutes.cartPageRoute);
-                              },
-                              iconData: IconBroken.buy,
-                              size: 14,
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(right: 8),
-                              decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(99),
-                              ),
-                              child: Text(
-                                ' ${cubit.cart.length} ',
-                                style: Theme.of(context).textTheme.caption,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        DefaultIconButton(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          iconData: IconBroken.arrowLeftSquare,
-                          size: 14,
-                        ),
-                      ],
+                            color: cubit.isCart(cartProduct)
+                                ? Colors.green
+                                : defaultColor,
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-        );
-      },
+          Padding(
+            padding: const EdgeInsets.only(top: 40.0, right: 25),
+            child: Row(
+              children: [
+                const Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Stack(
+                      alignment: AlignmentDirectional.topEnd,
+                      children: [
+                        DefaultIconButton(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, AppRoutes.cartPageRoute);
+                          },
+                          iconData: IconBroken.buy,
+                          size: 14,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(right: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(99),
+                          ),
+                          child: BlocBuilder<DatabaseCubit, DatabaseState>(
+                            builder: (context, state) {
+                              var cubit = context.read<DatabaseCubit>();
+                              return Text(
+                                ' ${cubit.cart.length} ',
+                                style: Theme.of(context).textTheme.caption,
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    DefaultIconButton(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      iconData: IconBroken.arrowLeftSquare,
+                      size: 14,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

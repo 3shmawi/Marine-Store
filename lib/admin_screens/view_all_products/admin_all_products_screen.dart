@@ -7,7 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../database/database_controller.dart';
+import '../../database/remote_database_controller.dart';
 import '../../shared/color/colors.dart';
 import '../../shared/components/components.dart';
 import '../../shared/icon/icons.dart';
@@ -26,8 +26,8 @@ class AdminProductScreen extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 30),
-          child: BlocBuilder<AdminViewAllProductsCubit,
-              AdminViewAllProductsState>(
+          child:
+              BlocBuilder<AdminViewAllProductsCubit, AdminViewAllProductsState>(
             builder: (context, state) {
               return StreamBuilder<List<ProductModel>>(
                 stream: FireStoreDataBase().getAdminProductsStream(),
@@ -38,9 +38,11 @@ class AdminProductScreen extends StatelessWidget {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 250,),
+                          const SizedBox(
+                            height: 250,
+                          ),
                           Image.asset(
-                            'assets/images/sala.png',
+                            'assets/images/buy.png',
                             height: 200,
                             width: double.infinity,
                           ),
@@ -51,7 +53,8 @@ class AdminProductScreen extends StatelessWidget {
                                 .textTheme
                                 .caption!
                                 .copyWith(fontSize: 20),
-                          ),Text(
+                          ),
+                          Text(
                             'Upload now!',
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
@@ -61,14 +64,12 @@ class AdminProductScreen extends StatelessWidget {
                           ),
                         ],
                       );
-
                     }
 
                     return Padding(
                       padding: const EdgeInsets.only(top: 52.0),
                       child: Column(
                         children: List.generate(
-
                           products.length,
                           (index) => InkWell(
                             borderRadius: BorderRadius.circular(15),
@@ -91,25 +92,10 @@ class AdminProductScreen extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      products[index]
-                                              .imgUrl
-                                              .startsWith('https://')
-                                          ? Image(
-                                              image: CachedNetworkImageProvider(
-                                                products[index].imgUrl,
-                                              ),
-                                              width: double.infinity,
-                                              fit: BoxFit.cover,
-                                              height: 200,
-                                            )
-                                          : Image.memory(
-                                              base64Decode(
-                                                products[index].imgUrl,
-                                              ),
-                                              width: double.infinity,
-                                              fit: BoxFit.cover,
-                                              height: 200,
-                                            ),
+                                      DefaultImageView(
+                                        image: products[index].imgUrl,
+                                        height: 200,
+                                      ),
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 15.0, vertical: 10),
@@ -163,16 +149,17 @@ class AdminProductScreen extends StatelessWidget {
                                                                         defaultColor),
                                                           ),
                                                           Text(
-                                                              '${products[index].price}\$',
-                                                              style: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .caption!
-                                                                  .copyWith(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .lineThrough,
-                                                                  ),),
+                                                            '${products[index].price}\$',
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .caption!
+                                                                .copyWith(
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .lineThrough,
+                                                                ),
+                                                          ),
                                                         ],
                                                       ),
                                                   ],

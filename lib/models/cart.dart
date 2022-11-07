@@ -1,5 +1,6 @@
 import 'package:beauty_supplies_project/models/product.dart';
 
+
 class CartModel {
   ProductModel? productModel;
   int number = 1;

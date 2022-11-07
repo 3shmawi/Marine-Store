@@ -18,8 +18,7 @@ Route<dynamic> onGenerate(RouteSettings settings) {
       return CupertinoPageRoute(
         builder: (_) {
           return ProductDetailsScreen(
-            product:
-                CartModel(productModel: settings.arguments as ProductModel, number: 1),
+            product: settings.arguments as ProductModel,
           );
         },
         settings: settings,
@@ -38,7 +37,7 @@ Route<dynamic> onGenerate(RouteSettings settings) {
       );
     case AppRoutes.categoryOnePageRoute:
       return CupertinoPageRoute(
-        builder: (_) =>  CategoryProducts(
+        builder: (_) => CategoryProducts(
           category: settings.arguments as String,
         ),
         settings: settings,

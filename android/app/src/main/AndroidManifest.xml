@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.supplies.beauty.beauty_supplies_project">
    <application
-        android:label="beauty_supplies_project"
+        android:label="E-Commerce"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

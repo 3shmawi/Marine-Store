@@ -15,15 +15,6 @@ abstract class DatabaseController {
 
   Stream<List<ProductModel>> getCategoryProductsStream(String category);
 
-// Stream<List<Product>> newProductsStream();
-// Stream<List<AddToCartModel>> myProductsCart();
-// Stream<List<DeliveryMethod>> deliveryMethodsStream();
-// Stream<List<ShippingAddress>> getShippingAddresses();
-//
-// Future<void> setUserData(UserData userData);
-// Future<void> addToCart(AddToCartModel product);
-// Future<void> saveAddress(ShippingAddress address);
-
 }
 
 class FireStoreDataBase implements DatabaseController {
@@ -60,7 +51,8 @@ class FireStoreDataBase implements DatabaseController {
   @override
   Stream<List<ProductModel>> getCategoryProductsStream(String category) =>
       _service.collectionsStream(
-        path: FirebaseCollectionPath.getCategoryProducts(category),
+        path: FirebaseCollectionPath.getAllProducts(),
         builder: (data, documentId) => ProductModel.fromMap(data!, documentId),
+        queryBuilder: (query) => query.where('category', isEqualTo: category),
       );
 }
