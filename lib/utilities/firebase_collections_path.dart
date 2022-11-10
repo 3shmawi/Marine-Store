@@ -53,6 +53,18 @@ class FirebaseCollectionPath {
   }) =>
       'usr/41yKO3ID3jkZkqQtrSbx/admin/$adminId/products/$newId';
 
+  static String setRate(
+      String productId,
+      ) =>
+      'products/$productId/rates/$userId';
+
+  static String getRates(
+      String productId,
+      ) =>
+      'products/$productId/rates/';
+
+
+
   // static String getAdminProducts() =>
   //     'usr/41yKO3ID3jkZkqQtrSbx/admin/$userId/products/';
 

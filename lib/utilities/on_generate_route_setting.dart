@@ -6,6 +6,7 @@ import 'package:beauty_supplies_project/modules/auth/login/login_screen.dart';
 import 'package:beauty_supplies_project/modules/cart/cart_screen.dart';
 import 'package:beauty_supplies_project/modules/home/home_screen.dart';
 import 'package:beauty_supplies_project/modules/product_detail/product_details_screen.dart';
+import 'package:beauty_supplies_project/modules/search/search_screen.dart';
 
 import 'package:flutter/cupertino.dart';
 import '../modules/auth/register/register_screen.dart';
@@ -35,7 +36,7 @@ Route<dynamic> onGenerate(RouteSettings settings) {
         builder: (_) => LoginScreen(),
         settings: settings,
       );
-    case AppRoutes.categoryOnePageRoute:
+    case AppRoutes.categoryProducts:
       return CupertinoPageRoute(
         builder: (_) => CategoryProducts(
           category: settings.arguments as String,
@@ -55,6 +56,13 @@ Route<dynamic> onGenerate(RouteSettings settings) {
     case AppRoutes.homePageRoute:
       return CupertinoPageRoute(
         builder: (_) => const HomeScreen(),
+        settings: settings,
+      );
+    case AppRoutes.search:
+      return CupertinoPageRoute(
+        builder: (_) => SearchScreen(
+          searchId: settings.arguments as String,
+        ),
         settings: settings,
       );
 

@@ -1,6 +1,5 @@
-import 'package:beauty_supplies_project/models/database_model.dart';
-import 'package:beauty_supplies_project/shared/sqflite_cubit/database_cubit.dart';
-import 'package:beauty_supplies_project/shared/sqflite_cubit/database_state.dart';
+import 'package:beauty_supplies_project/modules/search/cubit/search_cubit.dart';
+import 'package:beauty_supplies_project/modules/search/cubit/search_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,7 +7,6 @@ import '../../../database/remote_database_controller.dart';
 import '../../../models/product.dart';
 import '../../../shared/color/colors.dart';
 import '../../../shared/components/components.dart';
-import '../../../shared/icon/icons.dart';
 import '../../../utilities/app_routes.dart';
 
 class AllProducts extends StatelessWidget {
@@ -20,8 +18,8 @@ class AllProducts extends StatelessWidget {
       stream: FireStoreDataBase().getAllProductsStream(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
-          var product = snapshot.data;
-          if (product == null || product.isEmpty) {
+          var products = snapshot.data;
+          if (products == null || products.isEmpty) {
             return const DefaultNotFoundItems(
               image: 'assets/images/buy.png',
               title: 'No Products founded yet!',
@@ -36,14 +34,15 @@ class AllProducts extends StatelessWidget {
             crossAxisSpacing: 1.0,
             childAspectRatio: 1 / 1.067,
             children: List.generate(
-              product.length,
+              products.length,
               (count) {
-                int index = product.length - count - 1;
+                int index = products.length - count - 1;
+                var product =products[index];
                 return InkWell(
                   onTap: () {
                     Navigator.pushNamed(
                         context, AppRoutes.productDetailPageRoute,
-                        arguments: product[index]);
+                        arguments: product);
                   },
                   child: Card(
                     clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -56,7 +55,7 @@ class AllProducts extends StatelessWidget {
                       children: [
                         Expanded(
                           child: DefaultImageView(
-                            image: product[index].imgUrl,
+                            image: product.imgUrl,
                           ),
                         ),
                         Padding(
@@ -73,19 +72,27 @@ class AllProducts extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          product[index].title,
+                                          product.title,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleMedium,
                                         ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        if (product[index].discountValue == 0)
+                                        BlocBuilder<SearchCubit, SearchState>(
+                                            buildWhen: (_, current) => current
+                                                is GetAllProductsSearchState,
+                                            builder: (context, state) {
+                                              context
+                                                  .read<SearchCubit>()
+                                                  .getAllProducts(products);
+                                              return const SizedBox(
+                                                height: 5,
+                                              );
+                                            }),
+                                        if (product.discountValue == 0)
                                           Text(
-                                            '${product[index].price}\$',
+                                            '${product.price}\$',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: Theme.of(context)
@@ -93,11 +100,11 @@ class AllProducts extends StatelessWidget {
                                                 .caption!
                                                 .copyWith(color: defaultColor),
                                           ),
-                                        if (product[index].discountValue != 0 &&
-                                            product[index].discountValue !=
+                                        if (product.discountValue != 0 &&
+                                            product.discountValue !=
                                                 null)
                                           Text(
-                                            '${product[index].price * (product[index].discountValue!) / 100}\$   ',
+                                            '${product.price - (product.price * (product.discountValue!) / 100)}\$   ',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: Theme.of(context)
@@ -108,7 +115,7 @@ class AllProducts extends StatelessWidget {
                                         Row(
                                           children: [
                                             Text(
-                                              '${product[index].price}\$    ',
+                                              '${product.price}\$    ',
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: Theme.of(context)
@@ -121,7 +128,7 @@ class AllProducts extends StatelessWidget {
                                             ),
                                             const Spacer(),
                                             Text(
-                                              '${product[index].discountValue}%',
+                                              '${product.discountValue}%',
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: Theme.of(context)
@@ -131,7 +138,7 @@ class AllProducts extends StatelessWidget {
                                           ],
                                         ),
                                         DefaultRating(
-                                          rate: product[index].rate!.toDouble(),
+                                          id: product.id,
                                           size: 18,
                                         ),
                                       ],
@@ -141,34 +148,8 @@ class AllProducts extends StatelessWidget {
                                     width: 5.0,
                                   ),
                                   // const Spacer(),
-                                  BlocBuilder<DatabaseCubit, DatabaseState>(
-                                    builder: (context, state) {
-                                      var cubit = context.read<DatabaseCubit>();
-                                      var favProduct = FavProductModel(
-                                        productId: product[index].id,
-                                        title: product[index].title,
-                                        category: product[index].category,
-                                        imgUrl: product[index].imgUrl,
-                                        description: product[index].description,
-                                        price: product[index].price,
-                                        discountValue:
-                                            product[index].discountValue!,
-                                        rate: product[index].rate!,
-                                      );
-                                      return DefaultIconButton(
-                                        backgroundColor: cubit.isFav(favProduct)
-                                            ? Colors.redAccent
-                                            : Colors.black.withOpacity(.1),
-                                        color: cubit.isFav(favProduct)
-                                            ? Colors.white
-                                            : defaultColor,
-                                        onTap: () {
-                                          cubit.favoriteButton(favProduct);
-                                        },
-                                        iconData: IconBroken.heart,
-                                      );
-                                    },
-                                  ),
+                                  DefaultIconFavChangeState(
+                                      product: product),
                                 ],
                               ),
                             ],

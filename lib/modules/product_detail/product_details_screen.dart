@@ -1,14 +1,18 @@
 import 'package:beauty_supplies_project/models/product.dart';
+import 'package:beauty_supplies_project/models/rate.dart';
 import 'package:beauty_supplies_project/shared/color/colors.dart';
 import 'package:beauty_supplies_project/shared/components/components.dart';
 import 'package:beauty_supplies_project/shared/icon/icons.dart';
 import 'package:beauty_supplies_project/shared/sqflite_cubit/database_cubit.dart';
 
 import 'package:beauty_supplies_project/shared/sqflite_cubit/database_state.dart';
+import 'package:beauty_supplies_project/shared/user_data_cubit/user_cubit.dart';
+import 'package:beauty_supplies_project/shared/user_data_cubit/user_state.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../database/remote_database_controller.dart';
 import '../../models/database_model.dart';
 import '../../utilities/app_routes.dart';
 
@@ -92,9 +96,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: DefaultRatingFromUsr(
-                            onRating: (rate) {},
-                          ),
+                          child: DefaultRatingFromUsr(id: product.id),
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width - 50.0,

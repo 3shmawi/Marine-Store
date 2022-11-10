@@ -81,11 +81,7 @@ class SettingScreen extends StatelessWidget {
                     DefaultButton(
                       title: 'My Orders',
                       onTap: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AppRoutes.adminLayout,
-                          (route) => false,
-                        );
+
                       },
                       subTitle: 'Already have 3 orders',
                     ),
@@ -94,7 +90,38 @@ class SettingScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Align(
+                alignment: AlignmentDirectional.center,
+                child: DefaultElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      AppRoutes.adminLayout,
+                          (route) => false,
+                    );
+                  },
+                  header: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(IconBroken.profile),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Admin Layout',
+                        style: Theme.of(context)
+                            .textTheme
+                            .button!
+                            .copyWith(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
               child: Align(
                 alignment: AlignmentDirectional.center,
                 child: DefaultElevatedButton(
@@ -122,7 +149,50 @@ class SettingScreen extends StatelessWidget {
                         width: 5,
                       ),
                       Text(
-                        'Logout',
+                        'Logout Account',
+                        style: Theme.of(context)
+                            .textTheme
+                            .button!
+                            .copyWith(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Align(
+                alignment: AlignmentDirectional.center,
+                child: DefaultElevatedButton(
+                  color: Colors.red,
+                  onPressed: () {
+                    Auth().currentUser!.delete().then((value) {
+                      showToast(
+                          text: 'Delete Account Success', color: Colors.green);
+                      CacheHelper.removeData(key: SharedKeys.id);
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUpScreen(),
+                          ),
+                          (route) => false);
+                    }).catchError((error) {
+                      showToast(
+                          text: 'Delete Account Failed', color: Colors.red);
+                    });
+                  },
+                  header: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        IconBroken.delete,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Delete Account',
                         style: Theme.of(context)
                             .textTheme
                             .button!

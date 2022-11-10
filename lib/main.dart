@@ -2,9 +2,11 @@ import 'package:beauty_supplies_project/layout/admin_layout/cubit/admin_layout_c
 import 'package:beauty_supplies_project/modules/categories/cubit/categories_cubit.dart';
 import 'package:beauty_supplies_project/modules/home/all_products/cubit/all_products_cubit.dart';
 import 'package:beauty_supplies_project/modules/home/cubit/home_cubit.dart';
+import 'package:beauty_supplies_project/modules/search/cubit/search_cubit.dart';
 import 'package:beauty_supplies_project/services/cache_helper_services.dart';
 import 'package:beauty_supplies_project/shared/sqflite_cubit/database_cubit.dart';
 import 'package:beauty_supplies_project/shared/theme/theme_mode.dart';
+import 'package:beauty_supplies_project/shared/user_data_cubit/user_cubit.dart';
 import 'package:beauty_supplies_project/task/cubit/cubit.dart';
 import 'package:beauty_supplies_project/utilities/app_routes.dart';
 import 'package:beauty_supplies_project/utilities/constants.dart';
@@ -40,6 +42,8 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => AllProductsCubit()),
         BlocProvider(create: (_) => UsrLayoutCubit()),
+        BlocProvider(create: (_) => UserCubit()),
+        BlocProvider(create: (_) => SearchCubit()),
         BlocProvider(
             create: (_) => DatabaseCubit()
               ..getAllDataFromFavDataBase()

@@ -1,11 +1,16 @@
+import 'package:beauty_supplies_project/modules/auth/register/cubit/sign_up_cubit.dart';
+import 'package:beauty_supplies_project/modules/auth/register/cubit/sign_up_cubit.dart';
 import 'package:beauty_supplies_project/utilities/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../modules/auth/register/register_screen.dart';
 import '../../services/cache_helper_services.dart';
 import '../../services/firebase_auth_services.dart';
 import '../../shared/components/components.dart';
 import '../../shared/icon/icons.dart';
+import '../../shared/user_data_cubit/user_cubit.dart';
+import '../../shared/user_data_cubit/user_state.dart';
 import '../../utilities/enums.dart';
 
 class AdminSettingScreen extends StatelessWidget {
@@ -51,11 +56,16 @@ class AdminSettingScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Mohamed Ashmawi',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.subtitle1,
+                          BlocBuilder<UserCubit, UserState>(
+                            builder: (context, state) {
+                              var cubit = context.read<UserCubit>();
+                              return Text(
+                                'cubit.',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.subtitle1,
+                              );
+                            },
                           ),
                           const SizedBox(
                             height: 5,
@@ -80,7 +90,11 @@ class AdminSettingScreen extends StatelessWidget {
                     DefaultButton(
                       title: 'My Orders',
                       onTap: () {
-                        Navigator.pushNamed(context, AppRoutes.landingPageRoute,);
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          AppRoutes.landingPageRoute,
+                          (route) => false,
+                        );
                       },
                       subTitle: 'Already have 3 orders',
                     ),

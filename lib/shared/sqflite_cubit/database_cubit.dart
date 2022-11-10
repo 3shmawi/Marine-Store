@@ -3,7 +3,6 @@ import 'package:beauty_supplies_project/services/local_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../models/product.dart';
 import 'database_state.dart';
 
 class DatabaseCubit extends Cubit<DatabaseState> {
@@ -89,6 +88,7 @@ class DatabaseCubit extends Cubit<DatabaseState> {
     _database.readAllEcommerceCartData().then((value) {
       cart = [];
       cart = value;
+      getSumOfAllCartProductPrice();
       emit(GetAllDataFromCartLocalDatabaseSuccessState());
     }).catchError((error) {
       emit(GetAllDataFromCartLocalDatabaseErrorState());
@@ -100,6 +100,7 @@ class DatabaseCubit extends Cubit<DatabaseState> {
     _database.readAllEcommerceFavoriteData().then((value) {
       fav = [];
       fav = value;
+
       emit(GetAllDataFromFavLocalDatabaseSuccessState());
     }).catchError((error) {
       emit(GetAllDataFromFavLocalDatabaseErrorState());
@@ -196,6 +197,30 @@ class DatabaseCubit extends Cubit<DatabaseState> {
       emit(ChangeCartState());
 
       return true;
+    }
+  }
+
+  double allCartProductsPrice = 0.0;
+
+  void getSumOfAllCartProductPrice() {
+    allCartProductsPrice = 0.0;
+    for (var element in cart) {
+      allCartProductsPrice += getPriceAfterDiscount(
+              element.price.toDouble(), element.discountValue!.toDouble()) *
+          element.count;
+    }
+    emit(GetSumOfAllCartProductsPriceState());
+  }
+
+  double discountPrice = 0.0;
+
+  double getPriceAfterDiscount(double price, double discountValue) {
+    if (discountValue == 0) {
+      emit(GetPriceAfterDiscountState());
+      return price;
+    } else {
+      emit(GetPriceAfterDiscountState());
+      return price * (discountValue / 100);
     }
   }
 }

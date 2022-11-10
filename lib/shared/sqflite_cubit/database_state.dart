@@ -58,3 +58,7 @@ class GetAllDataFromFavLocalDatabaseErrorState extends DatabaseState {}
 class ChangeFavoriteState extends DatabaseState {}
 
 class ChangeCartState extends DatabaseState {}
+
+class GetSumOfAllCartProductsPriceState extends DatabaseState {}
+
+class GetPriceAfterDiscountState extends DatabaseState {}

@@ -1,3 +1,5 @@
+import 'package:beauty_supplies_project/models/rate.dart';
+
 import '../models/carousel_slider.dart';
 import '../models/category.dart';
 import '../models/product.dart';
@@ -15,6 +17,7 @@ abstract class DatabaseController {
 
   Stream<List<ProductModel>> getCategoryProductsStream(String category);
 
+  Stream<List<RateModel>> getRateProductStream(String productId);
 }
 
 class FireStoreDataBase implements DatabaseController {
@@ -54,5 +57,12 @@ class FireStoreDataBase implements DatabaseController {
         path: FirebaseCollectionPath.getAllProducts(),
         builder: (data, documentId) => ProductModel.fromMap(data!, documentId),
         queryBuilder: (query) => query.where('category', isEqualTo: category),
+      );
+
+  @override
+  Stream<List<RateModel>> getRateProductStream(String productId) =>
+      _service.collectionsStream(
+        path: FirebaseCollectionPath.getRates(productId),
+        builder: (date, documentId) => RateModel.fromMap(date!, documentId),
       );
 }

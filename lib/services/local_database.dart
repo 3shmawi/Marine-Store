@@ -26,7 +26,7 @@ class EcommerceCartDatabase {
 
   Future _createDB(Database db, int version) async {
     await db.execute(
-        'CREATE TABLE cart (dbId INTEGER PRIMARY KEY, title TEXT, description TEXT, imgUrl TEXT, price INTEGER, category TEXT, count INTEGER, id TEXT, rate INTEGER, discountValue INTEGER)');
+        'CREATE TABLE cart (dbId INTEGER PRIMARY KEY, title TEXT, description TEXT, imgUrl TEXT, category TEXT, price INTEGER, id TEXT, rate INTEGER, discountValue INTEGER, count INTEGER)');
     await db.execute(
         'CREATE TABLE favorite (dbId INTEGER PRIMARY KEY, title TEXT, description TEXT, imgUrl TEXT, category TEXT, price INTEGER, id TEXT, rate INTEGER, discountValue INTEGER)');
   }
@@ -52,43 +52,43 @@ class EcommerceCartDatabase {
     return product.copy(dbId: id);
   }
 
-  Future<ProductDatabaseModel> readCartProduct({
-    required int id,
-  }) async {
-    final db = await instance.database;
+  // Future<ProductDatabaseModel> readCartProduct({
+  //   required int id,
+  // }) async {
+  //   final db = await instance.database;
+  //
+  //   final maps = await db.query(
+  //     'cart',
+  //     columns: ProductFields.values,
+  //     where: '${ProductFields.dbId} = ?',
+  //     whereArgs: [id],
+  //   );
+  //
+  //   if (maps.isNotEmpty) {
+  //     return ProductDatabaseModel.fromJson(maps.first);
+  //   } else {
+  //     throw Exception('ID $id not found');
+  //   }
+  // }
 
-    final maps = await db.query(
-      'cart',
-      columns: ProductFields.values,
-      where: '${ProductFields.dbId} = ?',
-      whereArgs: [id],
-    );
-
-    if (maps.isNotEmpty) {
-      return ProductDatabaseModel.fromJson(maps.first);
-    } else {
-      throw Exception('ID $id not found');
-    }
-  }
-
-  Future<ProductDatabaseModel> readFavoriteProduct({
-    required int id,
-  }) async {
-    final db = await instance.database;
-
-    final maps = await db.query(
-      'favorite',
-      columns: ProductFields.values,
-      where: '${ProductFields.dbId} = ?',
-      whereArgs: [id],
-    );
-
-    if (maps.isNotEmpty) {
-      return ProductDatabaseModel.fromJson(maps.first);
-    } else {
-      throw Exception('ID $id not found');
-    }
-  }
+  // Future<ProductDatabaseModel> readFavoriteProduct({
+  //   required int id,
+  // }) async {
+  //   final db = await instance.database;
+  //
+  //   final maps = await db.query(
+  //     'favorite',
+  //     columns: ProductFields.values,
+  //     where: '${ProductFields.dbId} = ?',
+  //     whereArgs: [id],
+  //   );
+  //
+  //   if (maps.isNotEmpty) {
+  //     return ProductDatabaseModel.fromJson(maps.first);
+  //   } else {
+  //     throw Exception('ID $id not found');
+  //   }
+  // }
 
   Future<List<CartProductModel>> readAllEcommerceCartData() async {
     final db = await instance.database;

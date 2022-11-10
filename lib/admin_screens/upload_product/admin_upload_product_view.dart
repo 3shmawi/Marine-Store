@@ -26,7 +26,6 @@ class AdminViewUploadProduct extends StatelessWidget {
     String categoryItem = '';
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: defaultAppBarWithoutAnything(context),
       body: SingleChildScrollView(
         child: Form(
           key: formKey,

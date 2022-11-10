@@ -32,7 +32,7 @@ class CategorySection extends StatelessWidget {
                   onTap: () {
                     Navigator.pushNamedAndRemoveUntil(
                       context,
-                      AppRoutes.categoryOnePageRoute,
+                      AppRoutes.categoryProducts,
                       arguments: category[index].name,
                       (route) => true,
                     );

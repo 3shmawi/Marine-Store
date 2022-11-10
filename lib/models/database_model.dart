@@ -31,57 +31,6 @@ class ProductFields {
   static const String count = 'count';
 }
 
-class ProductDatabaseModel {
-  final int? id;
-  final String title;
-  final String imgUrl;
-  final String description;
-  final String category;
-
-  ProductDatabaseModel({
-    this.id,
-    required this.title,
-    required this.imgUrl,
-    required this.description,
-    required this.category,
-  });
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'title': title,
-      'imgUrl': imgUrl,
-      'description': description,
-      'category': category,
-    };
-  }
-
-  factory ProductDatabaseModel.fromJson(Map<String, dynamic> map) {
-    return ProductDatabaseModel(
-      id: map['id'] as int?,
-      title: map['title'] as String,
-      imgUrl: map['imgUrl'] as String,
-      description: map['description'] as String,
-      category: map['category'] as String,
-    );
-  }
-
-  ProductDatabaseModel copy({
-    int? id,
-    String? title,
-    String? description,
-    String? imgUrl,
-    String? category,
-  }) =>
-      ProductDatabaseModel(
-        id: id ?? this.id,
-        title: title ?? this.title,
-        description: description ?? this.description,
-        category: category ?? this.category,
-        imgUrl: imgUrl ?? this.imgUrl,
-      );
-}
-
 class CartProductModel extends ProductModel {
   int? dbId;
   int count;
