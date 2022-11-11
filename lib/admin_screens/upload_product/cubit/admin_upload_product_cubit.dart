@@ -25,12 +25,16 @@ class AdminUploadProductViewCubit extends Cubit<AdminUploadProductViewState> {
     emit(AdminViewResetImageState());
   }
 
+  double imageSize = 0;
+
   void pickImageBase64() async {
     try {
+      imageSize = 0;
       // pick image from gallery, change ImageSource.camera if you want to capture image from camera.
       final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
       if (image == null) return;
       // read picked image byte data.
+
       Uint8List imageBytes = await image.readAsBytes();
       // using base64 encoder convert image into base64 string.
       base64String = base64.encode(imageBytes);
@@ -43,6 +47,7 @@ class AdminUploadProductViewCubit extends Cubit<AdminUploadProductViewState> {
       imageFile =
           imageTemp; // setState to image the UI and show picked image on screen.
 
+      imageSize = ((imageFile!.readAsBytesSync().lengthInBytes) / 1024) / 1024;
       emit(AdminViewPickedImagesSuccessState());
     } on PlatformException catch (e) {
       emit(AdminViewPickedImageErrorState());
@@ -78,14 +83,13 @@ class AdminUploadProductViewCubit extends Cubit<AdminUploadProductViewState> {
             ),
             data: productModel.toMap())
         .then((value) {
-      emit(AdminViewPostProductAtAdminPathSuccessState());
       _service
           .setData(
               path: FirebaseCollectionPath.setProductsAtProductsPath(
                   productModel.id),
               data: productModel.toMap())
           .then((value) {
-        emit(AdminViewPostProductAtProductsPathSuccessState());
+        emit(AdminViewPostProductAtAdminPathSuccessState());
       }).catchError((error) {
         showToast(text: error.toString(), color: Colors.red);
 

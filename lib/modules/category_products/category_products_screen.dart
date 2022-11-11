@@ -14,7 +14,8 @@ class CategoryProducts extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: defaultAppBarWithoutAnything(context),
+      appBar: defaultAppBarWithoutAnything(context,
+          search: 'categoryProductsSearch'),
       body: StreamBuilder<List<ProductModel>>(
         stream: FireStoreDataBase().getCategoryProductsStream(category),
         builder: (context, snapshot) {

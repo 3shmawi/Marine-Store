@@ -19,7 +19,11 @@ import '../../database/remote_database_controller.dart';
 import '../../models/category.dart';
 import '../../models/product.dart';
 import '../../models/rate.dart';
+import '../../models/user.dart';
+import '../../services/cache_helper_services.dart';
+import '../../services/firebase_auth_services.dart';
 import '../../utilities/app_routes.dart';
+import '../../utilities/enums.dart';
 import '../user_data_cubit/user_cubit.dart';
 import '../user_data_cubit/user_state.dart';
 
@@ -390,6 +394,7 @@ PreferredSize defaultAppBar(context) {
 AppBar defaultAppBarWithoutAnything(
   context, {
   bool show = true,
+  required String search,
 }) {
   return AppBar(
     titleSpacing: 0,
@@ -423,8 +428,11 @@ AppBar defaultAppBarWithoutAnything(
             flex: 5,
             child: InkWell(
               onTap: () {
-                Navigator.pushNamed(context, AppRoutes.search,
-                    arguments: 'cartSearch');
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.search,
+                  arguments: search,
+                );
               },
               borderRadius: BorderRadius.circular(15),
               child: Card(
@@ -710,7 +718,7 @@ class DefaultFavoriteCard extends StatelessWidget {
                         style: Theme.of(context).textTheme.caption,
                       ),
                       DefaultRating(
-                        size: 18,
+                        size: 16,
                         id: id,
                       ),
                     ],
@@ -1049,9 +1057,8 @@ class DefaultRating extends StatelessWidget {
                 itemSize: size,
                 direction: Axis.horizontal,
               ),
-
               Text(
-                '  [${rate.length}]',
+                ' (${rateSum / rate.length})',
                 style: Theme.of(context).textTheme.caption,
               ),
             ],
@@ -1225,64 +1232,76 @@ class DefaultProductCard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  product.title,
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                DefaultRating(
-                                  id: product.id,
-                                  size: 15,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            if (product.discountValue == 0)
+                        SizedBox(
+                          width: 220,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                               Text(
-                                '${product.price}\$',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .caption!
-                                    .copyWith(color: defaultColor),
+                                product.title,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.titleMedium,
                               ),
-                            if (product.discountValue != 0 &&
-                                product.discountValue != null)
-                              Row(
-                                children: [
-                                  Text(
-                                    '${product.price - (product.price * (product.discountValue!) / 100)}\$   ',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .caption!
-                                        .copyWith(color: defaultColor),
-                                  ),
-                                  Text(
-                                    '${product.price}\$',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .caption!
-                                        .copyWith(
-                                          decoration:
-                                              TextDecoration.lineThrough,
-                                        ),
-                                  ),
-                                  Text(
-                                    '   ${product.discountValue}%',
-                                    style: Theme.of(context).textTheme.caption!,
-                                  ),
-                                ],
+                              const SizedBox(
+                                height: 5,
                               ),
-                          ],
+                              if (product.discountValue == 0)
+                                Row(
+                                  children: [
+                                    Text(
+                                      '${product.price} E.g',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption!
+                                          .copyWith(color: defaultColor),
+                                    ),
+                                    DefaultRating(
+                                      id: product.id,
+                                      size: 15,
+                                    ),
+                                  ],
+                                ),
+                              if (product.discountValue != 0 &&
+                                  product.discountValue != null)
+                                Row(
+                                  children: [
+                                    Text(
+                                      '${product.price - (product.price * (product.discountValue!) / 100)} E.g   ',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption!
+                                          .copyWith(color: defaultColor),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        '${product.price} E.g',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .caption!
+                                            .copyWith(
+                                              decoration:
+                                                  TextDecoration.lineThrough,
+                                            ),
+                                      ),
+                                    ),
+                                    Text(
+                                      '   ${product.discountValue}%',
+                                      style:
+                                          Theme.of(context).textTheme.caption!,
+                                    ),
+                                    DefaultRating(
+                                      id: product.id,
+                                      size: 15,
+                                    ),
+                                  ],
+                                ),
+                            ],
+                          ),
                         ),
                         const SizedBox(
                           width: 5.0,
@@ -1382,6 +1401,115 @@ class DefaultIconFavChangeState extends StatelessWidget {
           iconData: IconBroken.heart,
         );
       },
+    );
+  }
+}
+
+
+class DefaultUserNameAndEmail extends StatelessWidget {
+  const DefaultUserNameAndEmail({super.key});
+
+
+  @override
+  Widget build(BuildContext context) {
+    String userId =CacheHelper.getData(key: SharedKeys.id);
+    return  Padding(
+      padding: const EdgeInsets.only(
+        top: 10.0,
+        left: 10,
+        bottom: 25,
+      ),
+      child: StreamBuilder<UserModel>(
+        stream: FireStoreDataBase().getUserDataStream(userId),
+        builder: (context, snapshot){
+          if(snapshot.connectionState == ConnectionState.active){
+            var data = snapshot.data;
+            if(data == null)
+            {
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 40,
+                    child: Icon(
+                      IconBroken.profile,
+                      size: 40,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'User Name',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'User Email',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.caption,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const CircleAvatar(
+                  backgroundColor: Colors.white,
+                  radius: 40,
+                  child: Icon(
+                    IconBroken.profile,
+                    size: 40,
+                    color: Colors.black,
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          data.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          Auth().currentUser!.email ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+          return const Center(child: CircularProgressIndicator(),);
+        },
+
+      ),
     );
   }
 }

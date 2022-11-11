@@ -28,7 +28,7 @@ class CarouselSliderImageScreen extends StatelessWidget {
                 int index = images.length - count - 1;
 
                 return Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
+                  padding: const EdgeInsets.only(top: 10.0,right: 10,left: 10),
                   child: Container(
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     decoration: BoxDecoration(
@@ -36,6 +36,7 @@ class CarouselSliderImageScreen extends StatelessWidget {
                     ),
                     child: DefaultImageView(
                       image: images[index].imgUrl,
+
                     ),
                   ),
                 );

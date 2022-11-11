@@ -1,7 +1,6 @@
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'admin_settings_state.dart';
+import 'admin_settings_state.dart';
 
 class AdminSettingsCubit extends Cubit<AdminSettingsState> {
   AdminSettingsCubit() : super(AdminSettingsInitial());

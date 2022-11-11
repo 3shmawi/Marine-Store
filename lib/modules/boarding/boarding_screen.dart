@@ -39,31 +39,38 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       image: 'assets/images/search_product.png',
       title: 'All you need is here',
       body: 'هيا نستكشف أكثر ',
-    ), BoardingModel(
+    ),
+    BoardingModel(
       image: 'assets/images/search_product.png',
       title: 'All you need is here',
       body: 'هيا نستكشف أكثر ',
-    ), BoardingModel(
+    ),
+    BoardingModel(
       image: 'assets/images/search_product.png',
       title: 'All you need is here',
       body: 'هيا نستكشف أكثر ',
-    ),BoardingModel(
+    ),
+    BoardingModel(
       image: 'assets/images/search_product.png',
       title: 'All you need is here',
       body: 'هيا نستكشف أكثر ',
-    ),BoardingModel(
+    ),
+    BoardingModel(
       image: 'assets/images/search_product.png',
       title: 'All you need is here',
       body: 'هيا نستكشف أكثر ',
-    ),BoardingModel(
+    ),
+    BoardingModel(
       image: 'assets/images/search_product.png',
       title: 'All you need is here',
       body: 'هيا نستكشف أكثر ',
-    ),BoardingModel(
+    ),
+    BoardingModel(
       image: 'assets/images/search_product.png',
       title: 'All you need is here',
       body: 'هيا نستكشف أكثر ',
-    ), BoardingModel(
+    ),
+    BoardingModel(
       image: 'assets/images/search_product.png',
       title: 'All you need is here',
       body: 'هيا نستكشف أكثر ',
@@ -90,7 +97,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: defaultAppBarWithoutAnything(context),
+      appBar: defaultAppBarWithoutAnything(context, search: 'boarding'),
       body: Stack(
         alignment: AlignmentDirectional.topEnd,
         children: [
@@ -103,7 +110,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
               submit();
             },
             child: Container(
-              margin: const EdgeInsets.only(top: 30,right: 10),
+              margin: const EdgeInsets.only(top: 30, right: 10),
               height: 50,
               width: 50,
               child: DefaultIconButton(
@@ -190,7 +197,11 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Image.asset(model.image,height: 2000,width: 1000,),
+            child: Image.asset(
+              model.image,
+              height: 2000,
+              width: 1000,
+            ),
           ),
           const SizedBox(
             height: 30.0,

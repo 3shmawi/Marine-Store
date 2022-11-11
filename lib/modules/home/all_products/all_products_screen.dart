@@ -92,7 +92,7 @@ class AllProducts extends StatelessWidget {
                                             }),
                                         if (product.discountValue == 0)
                                           Text(
-                                            '${product.price}\$',
+                                            '${product.price} E.g',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: Theme.of(context)
@@ -104,7 +104,7 @@ class AllProducts extends StatelessWidget {
                                             product.discountValue !=
                                                 null)
                                           Text(
-                                            '${product.price - (product.price * (product.discountValue!) / 100)}\$   ',
+                                            '${product.price - (product.price * (product.discountValue!) / 100)} E.g   ',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: Theme.of(context)
@@ -115,7 +115,7 @@ class AllProducts extends StatelessWidget {
                                         Row(
                                           children: [
                                             Text(
-                                              '${product.price}\$    ',
+                                              '${product.price} E.g    ',
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: Theme.of(context)
@@ -139,7 +139,7 @@ class AllProducts extends StatelessWidget {
                                         ),
                                         DefaultRating(
                                           id: product.id,
-                                          size: 18,
+                                          size: 17.5,
                                         ),
                                       ],
                                     ),

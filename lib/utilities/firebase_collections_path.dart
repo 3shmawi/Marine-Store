@@ -1,15 +1,20 @@
-import 'package:beauty_supplies_project/utilities/constants.dart';
+
+import '../services/cache_helper_services.dart';
+import 'enums.dart';
 
 class FirebaseCollectionPath {
+  static String userId = CacheHelper.getData(key: SharedKeys.id);
+
   static String carousel() => 'layout_image/';
 
   static String category() => 'category/';
 
-  static String setProductsAtProductsPath(String productId) => 'products/$productId';
+  static String setProductsAtProductsPath(String productId) =>
+      'products/$productId';
 
   static String setProductsAtCategoryProductsPath(
     String category,
-      String productId,
+    String productId,
   ) =>
       '$category/$productId';
 
@@ -22,7 +27,7 @@ class FirebaseCollectionPath {
 
   static String getAllProducts() => 'products/';
 
-  static String getCategoryProducts(String category)=> '$category/';
+  static String getCategoryProducts(String category) => '$category/';
 
   static String deleteAdminProduct(
     String productId,
@@ -42,8 +47,7 @@ class FirebaseCollectionPath {
 
   static String deliveryMethods() => 'deliveryMethods/';
 
-  static String clientUser(String uid) =>
-      'usr/41yKO3ID3jkZkqQtrSbx/client/$uid';
+  static String clientUser(String uid) => 'usr/$uid';
 
   static String allProducts() => 'usr/41yKO3ID3jkZkqQtrSbx/admin/';
 
@@ -54,16 +58,14 @@ class FirebaseCollectionPath {
       'usr/41yKO3ID3jkZkqQtrSbx/admin/$adminId/products/$newId';
 
   static String setRate(
-      String productId,
-      ) =>
+    String productId,
+  ) =>
       'products/$productId/rates/$userId';
 
   static String getRates(
-      String productId,
-      ) =>
+    String productId,
+  ) =>
       'products/$productId/rates/';
-
-
 
   // static String getAdminProducts() =>
   //     'usr/41yKO3ID3jkZkqQtrSbx/admin/$userId/products/';

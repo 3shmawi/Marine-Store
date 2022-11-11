@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../services/cache_helper_services.dart';
-import '../../../../utilities/constants.dart';
 import '../../../../utilities/enums.dart';
 
 part 'sign_up_state.dart';
@@ -20,7 +19,7 @@ class SignUpCubit extends Cubit<SignUpStates> {
   final FirestoreServices _service = FirestoreServices.instance;
 
   Future<void> createUser(UserModel clientUser) async => _service.setData(
-        path: FirebaseCollectionPath.clientUser(createNewId()),
+        path: FirebaseCollectionPath.clientUser(clientUser.id),
         data: clientUser.toMap(),
       );
 

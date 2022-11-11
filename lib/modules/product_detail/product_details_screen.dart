@@ -1,18 +1,13 @@
 import 'package:beauty_supplies_project/models/product.dart';
-import 'package:beauty_supplies_project/models/rate.dart';
 import 'package:beauty_supplies_project/shared/color/colors.dart';
 import 'package:beauty_supplies_project/shared/components/components.dart';
 import 'package:beauty_supplies_project/shared/icon/icons.dart';
 import 'package:beauty_supplies_project/shared/sqflite_cubit/database_cubit.dart';
 
 import 'package:beauty_supplies_project/shared/sqflite_cubit/database_state.dart';
-import 'package:beauty_supplies_project/shared/user_data_cubit/user_cubit.dart';
-import 'package:beauty_supplies_project/shared/user_data_cubit/user_state.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../database/remote_database_controller.dart';
 import '../../models/database_model.dart';
 import '../../utilities/app_routes.dart';
 
@@ -45,7 +40,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         Text(
                           product.category,
                           style: const TextStyle(
-                            fontSize: 42.0,
+                            fontSize: 40.0,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFFF17532),
                           ),
@@ -61,42 +56,42 @@ class ProductDetailsScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 20.0),
+                        Text(
+                          product.title,
+                          style: const TextStyle(
+                              color: Color(0xFF575E67), fontSize: 24.0),
+                        ),
                         Row(
                           children: [
-                            Text(
-                              product.title,
-                              style: const TextStyle(
-                                  color: Color(0xFF575E67), fontSize: 24.0),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10.0),
+                              child: DefaultRatingFromUsr(id: product.id),
                             ),
                             const Spacer(),
                             if (product.discountValue == 0)
                               Text(
-                                '${product.price}\$',
+                                '${product.price} E.g',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context)
                                     .textTheme
                                     .caption!
                                     .copyWith(
-                                        color: defaultColor, fontSize: 24),
+                                    color: defaultColor, fontSize: 24),
                               ),
                             if (product.discountValue != 0 &&
                                 product.discountValue != null)
                               Text(
-                                '${product.price * (product.discountValue!) / 100}\$   ',
+                                '${product.price - (product.price * (product.discountValue!) / 100)} E.g   ',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context)
                                     .textTheme
                                     .caption!
                                     .copyWith(
-                                        color: defaultColor, fontSize: 24),
+                                    color: defaultColor, fontSize: 24),
                               ),
                           ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: DefaultRatingFromUsr(id: product.id),
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width - 50.0,
@@ -169,13 +164,13 @@ class ProductDetailsScreen extends StatelessWidget {
                               children: [
                                 Icon(
                                   cubit.isCart(cartProduct)
-                                      ? Icons.check_circle_outline
+                                      ? IconBroken.delete
                                       : Icons.add,
                                   size: 16,
                                 ),
                                 Text(
                                   cubit.isCart(cartProduct)
-                                      ? '  Done'
+                                      ? ' Remove From Cart'
                                       : 'Add to Cart',
                                   style: Theme.of(context)
                                       .textTheme
@@ -188,7 +183,7 @@ class ProductDetailsScreen extends StatelessWidget {
                               cubit.cartButton(cartProduct);
                             },
                             color: cubit.isCart(cartProduct)
-                                ? Colors.green
+                                ? Colors.red
                                 : defaultColor,
                           );
                         },

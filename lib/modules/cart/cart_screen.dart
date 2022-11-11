@@ -19,7 +19,7 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       extendBodyBehindAppBar: true,
-      appBar: defaultAppBarWithoutAnything(context, show: false),
+      appBar: defaultAppBarWithoutAnything(context, show: false,search: 'cartSearch'),
       body: BlocBuilder<DatabaseCubit, DatabaseState>(
         buildWhen: (previous, current) =>
             current is GetAllDataFromCartLocalDatabaseSuccessState,
@@ -42,7 +42,7 @@ class CartScreen extends StatelessWidget {
                             image: product.imgUrl,
                             title: product.title,
                             price:
-                                '${cubit.getPriceAfterDiscount(product.price.toDouble(), product.discountValue!.toDouble())} \$',
+                                '${cubit.getPriceAfterDiscount(product.price.toDouble(), product.discountValue!.toDouble()) * product.count} E.g',
                             category: product.category,
                             rate: product.rate!,
                             id: product.id,

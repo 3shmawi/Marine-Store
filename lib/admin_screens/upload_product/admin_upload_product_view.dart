@@ -272,11 +272,8 @@ class AdminViewUploadProduct extends StatelessWidget {
                   child: BlocConsumer<AdminUploadProductViewCubit,
                       AdminUploadProductViewState>(
                     listener: (context, state) {
-                      if (state is AdminViewPostProductAtAdminPathLoadingState ||
-                          state
-                          is AdminViewPostProductAtProductsPathLoadingState ||
-                          state
-                          is AdminViewPostProductAtCategoryPathLoadingState) {
+                      if (state
+                          is AdminViewPostProductAtAdminPathSuccessState) {
                         context
                             .read<AdminUploadProductViewCubit>()
                             .resetBase64();
@@ -290,9 +287,7 @@ class AdminViewUploadProduct extends StatelessWidget {
                       } else if (state
                               is AdminViewPostProductAtAdminPathErrorState ||
                           state
-                              is AdminViewPostProductAtProductsPathErrorState ||
-                          state
-                              is AdminViewPostProductAtCategoryPathErrorState) {
+                              is AdminViewPostProductAtProductsPathErrorState) {
                         showToast(
                           text:
                               'Failed! Please reduce image size or check internet',
@@ -301,11 +296,9 @@ class AdminViewUploadProduct extends StatelessWidget {
                       }
                     },
                     builder: (context, state) {
-                      return (state is AdminViewPostProductAtAdminPathLoadingState ||
-                              state
-                                  is AdminViewPostProductAtProductsPathLoadingState ||
-                              state
-                                  is AdminViewPostProductAtCategoryPathLoadingState)
+                      var cubit = context.read<AdminUploadProductViewCubit>();
+                      return (state
+                              is AdminViewPostProductAtAdminPathLoadingState)
                           ? const Center(
                               child: CircularProgressIndicator(),
                             )
@@ -320,7 +313,7 @@ class AdminViewUploadProduct extends StatelessWidget {
                                     ),
                               ),
                               onPressed: () => submitConditions(
-                                  formKey, context, categoryItem),
+                                  formKey, cubit, categoryItem),
                             );
                     },
                   ),
@@ -333,12 +326,15 @@ class AdminViewUploadProduct extends StatelessWidget {
     );
   }
 
-  void submitConditions(
-      GlobalKey<FormState> formKey, BuildContext context, String category) {
-    context.read<AdminUploadProductViewCubit>().createNewIdState();
+  void submitConditions(GlobalKey<FormState> formKey,
+      AdminUploadProductViewCubit cubit, String category) {
+    cubit.createNewIdState();
     if (formKey.currentState!.validate()) {
-      if (context.read<AdminUploadProductViewCubit>().base64String == null) {
+      if (cubit.base64String == null) {
         showToast(text: 'Please Add product image first', color: Colors.red);
+      } else if (cubit.imageSize >= 1) {
+        showToast(
+            text: 'Image size should be less than one mega', color: Colors.red);
       } else if (priceController.text.isEmpty) {
         showToast(text: 'Price should not be empty', color: Colors.red);
       } else if (discountController.text.isEmpty) {
@@ -347,22 +343,28 @@ class AdminViewUploadProduct extends StatelessWidget {
       } else if (checkValue(priceController.text) ||
           checkValue(discountController.text)) {
         showToast(text: 'Invalid Number', color: Colors.red);
+      } else if (discountController.text.length > 2) {
+        showToast(
+            text: 'Discount value must be less than three number',
+            color: Colors.red);
+      } else if (priceController.text.length > 8) {
+        showToast(
+            text: 'Price must be less than nine number', color: Colors.red);
       } else {
-        context.read<AdminUploadProductViewCubit>().setProductAtPathAdmin(
-              ProductModel(
-                id: context.read<AdminUploadProductViewCubit>().newId!,
-                description: descriptionController.text,
-                title: titleController.text,
-                price: int.parse(priceController.text),
-                imgUrl:
-                    context.read<AdminUploadProductViewCubit>().base64String!,
-                category: category,
-                discountValue: discountController.text.isEmpty
-                    ? 0
-                    : int.parse(discountController.text),
-                rate: 0,
-              ),
-            );
+        cubit.setProductAtPathAdmin(
+          ProductModel(
+            id: cubit.newId!,
+            description: descriptionController.text,
+            title: titleController.text,
+            price: int.parse(priceController.text),
+            imgUrl: cubit.base64String!,
+            category: category,
+            discountValue: discountController.text.isEmpty
+                ? 0
+                : int.parse(discountController.text),
+            rate: 0,
+          ),
+        );
       }
     }
   }

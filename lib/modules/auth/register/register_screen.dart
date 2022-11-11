@@ -157,11 +157,21 @@ class SignUpScreen extends StatelessWidget {
                                   )
                                 : DefaultElevatedButton(
                                     onPressed: () {
-                                      context.read<SignUpCubit>().userRegister(
-                                             name: nameController.text,
-                                            email: emailController.text,
-                                            password: passwordController.text,
-                                          );
+                                      if (passwordController.text !=
+                                          rePasswordController.text) {
+                                        showToast(
+                                            text:
+                                                'Confirm Password not equal Password',
+                                            color: Colors.red);
+                                      } else {
+                                        context
+                                            .read<SignUpCubit>()
+                                            .userRegister(
+                                              name: nameController.text,
+                                              email: emailController.text,
+                                              password: passwordController.text,
+                                            );
+                                      }
                                     },
                                     header: Text(
                                       'SIGNUP',

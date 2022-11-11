@@ -10,7 +10,10 @@ class UserCubit extends Cubit<UserState> {
 
   UserModel? userModel;
 
-  void getUserData() {}
+  // void getUserData() {
+  //
+  //   FirestoreServices.instance.documentsStream(path: path, builder: builder)
+  // }
 
   final FirestoreServices _service = FirestoreServices.instance;
 

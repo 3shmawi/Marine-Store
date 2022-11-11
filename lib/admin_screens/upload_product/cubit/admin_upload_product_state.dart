@@ -15,19 +15,9 @@ class AdminViewPostProductAtAdminPathSuccessState
 class AdminViewPostProductAtAdminPathErrorState
     extends AdminUploadProductViewState {}
 
-class AdminViewPostProductAtProductsPathLoadingState
-    extends AdminUploadProductViewState {}
 
-class AdminViewPostProductAtProductsPathSuccessState
-    extends AdminUploadProductViewState {}
 
 class AdminViewPostProductAtProductsPathErrorState
-    extends AdminUploadProductViewState {}
-
-class AdminViewPostProductAtCategoryPathLoadingState
-    extends AdminUploadProductViewState {}
-
-class AdminViewPostProductAtCategoryPathSuccessState
     extends AdminUploadProductViewState {}
 
 class AdminViewPostProductAtCategoryPathErrorState
