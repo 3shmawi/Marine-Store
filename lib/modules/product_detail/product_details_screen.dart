@@ -5,6 +5,7 @@ import 'package:beauty_supplies_project/shared/icon/icons.dart';
 import 'package:beauty_supplies_project/shared/sqflite_cubit/database_cubit.dart';
 
 import 'package:beauty_supplies_project/shared/sqflite_cubit/database_state.dart';
+import 'package:beauty_supplies_project/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -70,7 +71,7 @@ class ProductDetailsScreen extends StatelessWidget {
                             const Spacer(),
                             if (product.discountValue == 0)
                               Text(
-                                '${product.price} E.g',
+                                '${getTwoDecimalDouble(product.price.toString())} E.g',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context)
@@ -82,7 +83,7 @@ class ProductDetailsScreen extends StatelessWidget {
                             if (product.discountValue != 0 &&
                                 product.discountValue != null)
                               Text(
-                                '${product.price - (product.price * (product.discountValue!) / 100)} E.g   ',
+                                '${getTwoDecimalDouble((product.price - (product.price * (product.discountValue!) / 100)).toString())} E.g   ',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context)
@@ -208,7 +209,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         DefaultIconButton(
                           onTap: () {
                             Navigator.pushNamed(
-                                context, AppRoutes.cartPageRoute);
+                                context, AppRoutes.cartPageRoute,);
                           },
                           iconData: IconBroken.buy,
                           size: 14,

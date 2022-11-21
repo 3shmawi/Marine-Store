@@ -62,3 +62,9 @@ class ChangeCartState extends DatabaseState {}
 class GetSumOfAllCartProductsPriceState extends DatabaseState {}
 
 class GetPriceAfterDiscountState extends DatabaseState {}
+
+//close database
+class DeleteLocalDatabaseState extends DatabaseState {}
+
+//whatsAppMessageState
+class WhatsAppMessageState extends DatabaseState {}

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../models/category.dart';
 import '../../../shared/components/components.dart';
 import '../../../utilities/app_routes.dart';
+import 'component/components.dart';
 
 class CategorySection extends StatelessWidget {
   const CategorySection({Key? key}) : super(key: key);
@@ -29,15 +30,16 @@ class CategorySection extends StatelessWidget {
               itemBuilder: (context, count) {
                 int index = category.length - count - 1;
                 return InkWell(
-                  onTap: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      AppRoutes.categoryProducts,
-                      arguments: category[index].name,
-                      (route) => true,
-                    );
-                  },
-                  child: CategoryItem(category: category, index: index),
+                  onTap: () => Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRoutes.categoryProducts,
+                    arguments: category[index].name,
+                    (route) => true,
+                  ),
+                  child: CategoryItem(
+                    category: category,
+                    index: index,
+                  ),
                 );
               },
               separatorBuilder: (context, index) => const SizedBox(

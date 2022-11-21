@@ -8,4 +8,7 @@ class AppRoutes {
   static const String adminLayout = '/adminLayout';
   static const String categoryProducts = '/categoryProducts';
   static const String search = '/search';
+
+  static const String verify = '/verify';
+  static const String reset = '/reset';
 }

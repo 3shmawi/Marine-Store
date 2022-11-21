@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../admin_screens/admin_settings_screen/admin_settings_screen.dart';
-import '../../../admin_screens/upload_product/admin_upload_product_view.dart';
-import '../../../admin_screens/view_all_products/admin_all_products_screen.dart';
+import '../../../modules/admin_screens/admin_settings_screen/admin_settings_screen.dart';
+import '../../../modules/admin_screens/upload_product/admin_upload_product_view.dart';
+import '../../../modules/admin_screens/view_all_products/admin_all_products_screen.dart';
 import '../../../shared/icon/icons.dart';
 import 'admin_layout_state.dart';
 

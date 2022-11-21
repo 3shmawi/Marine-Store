@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:beauty_supplies_project/models/database_model.dart';
 import 'package:beauty_supplies_project/modules/search/cubit/search_cubit.dart';
 import 'package:beauty_supplies_project/modules/search/cubit/search_state.dart';
@@ -7,9 +9,11 @@ import 'package:beauty_supplies_project/shared/components/components.dart';
 import 'package:beauty_supplies_project/shared/icon/icons.dart';
 import 'package:beauty_supplies_project/shared/sqflite_cubit/database_cubit.dart';
 import 'package:beauty_supplies_project/shared/sqflite_cubit/database_state.dart';
+import 'package:beauty_supplies_project/utilities/constants.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -19,7 +23,8 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       extendBodyBehindAppBar: true,
-      appBar: defaultAppBarWithoutAnything(context, show: false,search: 'cartSearch'),
+      appBar: defaultAppBarWithoutAnything(context,
+          show: false, search: 'cartSearch'),
       body: BlocBuilder<DatabaseCubit, DatabaseState>(
         buildWhen: (previous, current) =>
             current is GetAllDataFromCartLocalDatabaseSuccessState,
@@ -42,7 +47,7 @@ class CartScreen extends StatelessWidget {
                             image: product.imgUrl,
                             title: product.title,
                             price:
-                                '${cubit.getPriceAfterDiscount(product.price.toDouble(), product.discountValue!.toDouble()) * product.count} E.g',
+                                '${getTwoDecimalDouble((cubit.getPriceAfterDiscount(product.price.toDouble(), product.discountValue!.toDouble()) * product.count).toString())} E.g',
                             category: product.category,
                             rate: product.rate!,
                             id: product.id,
@@ -151,7 +156,7 @@ class CartScreen extends StatelessWidget {
                               IconBroken.buy,
                             ),
                             Text(
-                              '    Total ${cubit.allCartProductsPrice} E.g',
+                              '    Total ${getTwoDecimalDouble(cubit.allCartProductsPrice.toString())} E.g',
                               style: Theme.of(context)
                                   .textTheme
                                   .button!
@@ -159,7 +164,13 @@ class CartScreen extends StatelessWidget {
                             )
                           ],
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          final Uri url = Uri.parse(
+                              "whatsapp://send?phone=+201124576463&text=${cubit.whatsAppMessage}");
+                          if (!await launchUrl(url)) {
+                            throw 'Could not launch $url';
+                          }
+                        },
                       );
                     },
                   ),

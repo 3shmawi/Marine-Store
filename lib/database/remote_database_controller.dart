@@ -21,6 +21,8 @@ abstract class DatabaseController {
   Stream<List<RateModel>> getRateProductStream(String productId);
 
   Stream<UserModel> getUserDataStream(String uid);
+
+  Future<void> deleteUser(String path);
 }
 
 class FireStoreDataBase implements DatabaseController {
@@ -73,4 +75,7 @@ class FireStoreDataBase implements DatabaseController {
   Stream<UserModel> getUserDataStream(String uid) => _service.documentsStream(
       path: FirebaseCollectionPath.clientUser(uid),
       builder: (data, documentId) => UserModel.fromMap(data!, documentId));
+
+  @override
+  Future<void> deleteUser(String path) => _service.deleteData(path: path);
 }

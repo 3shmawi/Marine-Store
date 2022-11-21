@@ -11,7 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../utilities/firebase_collections_path.dart';
+import '../../../../utilities/firebase_collections_path.dart';
 import 'admin_upload_product_state.dart';
 
 class AdminUploadProductViewCubit extends Cubit<AdminUploadProductViewState> {

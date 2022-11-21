@@ -85,11 +85,11 @@ class SearchScreen extends StatelessWidget {
                             switch (searchId) {
                               case 'allProducts':
                                 cubit
-                                    .searchAtAllProducts(searchController.text);
+                                    .searchAtAllProducts(searchController.text.toLowerCase());
                                 break;
                               case 'cartSearch':
                                 cubit.searchAtCartProducts(
-                                    searchController.text);
+                                    searchController.text.toLowerCase());
                             }
                           }
                         },

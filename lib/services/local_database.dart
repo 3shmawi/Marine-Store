@@ -3,12 +3,12 @@ import 'package:path/path.dart';
 import 'package:beauty_supplies_project/models/database_model.dart';
 import 'package:sqflite/sqflite.dart';
 
-class EcommerceCartDatabase {
-  static final EcommerceCartDatabase instance = EcommerceCartDatabase._init();
+class EcommerceDatabase {
+  static final EcommerceDatabase instance = EcommerceDatabase._init();
 
   static Database? _database;
 
-  EcommerceCartDatabase._init();
+  EcommerceDatabase._init();
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -166,5 +166,12 @@ class EcommerceCartDatabase {
     final path = join(dbPath, 'ecommerce.db');
     await deleteDatabase(path);
     db.close();
+  }
+
+  Future delete() async {
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, 'ecommerce.db');
+    await deleteDatabase(path);
+
   }
 }

@@ -49,7 +49,7 @@ class FirebaseCollectionPath {
 
   static String clientUser(String uid) => 'usr/$uid';
 
-  static String allProducts() => 'usr/41yKO3ID3jkZkqQtrSbx/admin/';
+
 
   static String addAdminProduct({
     required String adminId,

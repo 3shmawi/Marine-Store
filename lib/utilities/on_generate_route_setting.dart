@@ -2,6 +2,8 @@ import 'package:beauty_supplies_project/layout/admin_layout/admin_layout_screen.
 import 'package:beauty_supplies_project/layout/usr_layout/usr_layout_screen.dart';
 import 'package:beauty_supplies_project/models/product.dart';
 import 'package:beauty_supplies_project/modules/auth/login/login_screen.dart';
+import 'package:beauty_supplies_project/modules/auth/reset_password/reset_password_screen.dart';
+import 'package:beauty_supplies_project/modules/auth/verify_email/verify_email_screen.dart';
 import 'package:beauty_supplies_project/modules/cart/cart_screen.dart';
 import 'package:beauty_supplies_project/modules/home/home_screen.dart';
 import 'package:beauty_supplies_project/modules/product_detail/product_details_screen.dart';
@@ -20,6 +22,20 @@ Route<dynamic> onGenerate(RouteSettings settings) {
           return ProductDetailsScreen(
             product: settings.arguments as ProductModel,
           );
+        },
+        settings: settings,
+      );
+    case AppRoutes.verify:
+      return CupertinoPageRoute(
+        builder: (_) {
+          return const VerifyScreen();
+        },
+        settings: settings,
+      );
+    case AppRoutes.reset:
+      return CupertinoPageRoute(
+        builder: (_) {
+          return const ResetScreen();
         },
         settings: settings,
       );

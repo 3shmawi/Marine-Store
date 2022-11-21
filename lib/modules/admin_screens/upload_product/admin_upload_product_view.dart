@@ -7,8 +7,8 @@ import 'package:beauty_supplies_project/shared/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../modules/categories/cubit/categories_cubit.dart';
-import '../../modules/categories/cubit/categories_state.dart';
+import '../../categories/cubit/categories_cubit.dart';
+import '../../categories/cubit/categories_state.dart';
 import 'cubit/admin_upload_product_cubit.dart';
 import 'cubit/admin_upload_product_state.dart';
 

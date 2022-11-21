@@ -1,11 +1,11 @@
-import 'package:beauty_supplies_project/admin_screens/view_all_products/cubit/admin_view_all_products_state.dart';
 import 'package:beauty_supplies_project/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../database/remote_database_controller.dart';
-import '../../shared/components/components.dart';
+import '../../../database/remote_database_controller.dart';
+import '../../../shared/components/components.dart';
 import 'cubit/admin_view_all_products_cubit.dart';
+import 'cubit/admin_view_all_products_state.dart';
 
 class AdminProductScreen extends StatelessWidget {
   const AdminProductScreen({Key? key}) : super(key: key);

@@ -1,8 +1,10 @@
 
 import 'package:flutter/material.dart';
 
-import '../../shared/components/components.dart';
-import '../../shared/icon/icons.dart';
+import '../../../shared/components/components.dart';
+import '../../../shared/icon/icons.dart';
+
+
 
 
 class AdminSettingScreen extends StatelessWidget {

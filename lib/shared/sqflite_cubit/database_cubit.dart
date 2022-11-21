@@ -1,5 +1,6 @@
 import 'package:beauty_supplies_project/models/database_model.dart';
 import 'package:beauty_supplies_project/services/local_database.dart';
+import 'package:beauty_supplies_project/utilities/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,7 +12,7 @@ class DatabaseCubit extends Cubit<DatabaseState> {
   List<CartProductModel> cart = [];
   List<FavProductModel> fav = [];
 
-  final EcommerceCartDatabase _database = EcommerceCartDatabase.instance;
+  final EcommerceDatabase _database = EcommerceDatabase.instance;
 
   // inset to database
   void insertToCartDataBase(CartProductModel productModel) {
@@ -89,6 +90,7 @@ class DatabaseCubit extends Cubit<DatabaseState> {
       cart = [];
       cart = value;
       getSumOfAllCartProductPrice();
+      getWhatsAppMessage();
       emit(GetAllDataFromCartLocalDatabaseSuccessState());
     }).catchError((error) {
       emit(GetAllDataFromCartLocalDatabaseErrorState());
@@ -106,33 +108,6 @@ class DatabaseCubit extends Cubit<DatabaseState> {
       emit(GetAllDataFromFavLocalDatabaseErrorState());
     });
   }
-
-  //
-  // List<ProductModel> products = [];
-  //
-  // void changeProducts(List<ProductModel> newProduct){
-  //   products =newProduct;
-  //   emit(ChangeState());
-  // }
-  // String image(String id) {
-  //   for (var element in products) {
-  //     if (element.id == id) return element.imgUrl;
-  //   }
-  //   return 'https://images.unsplash.com/photo-1663214532892-57aac8c5149f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1Nnx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=60';
-  // }
-
-  // bool isFav = false;
-  //
-  // void changeFavState(FavProductModel product) {
-  //   if (isFavorite(product.id)) {
-  //     insertToFavDataBase(product);
-  //   } else {
-  //     int? dId = product.dbId;
-  //     if (dId != null) {
-  //       deleteFromFavDataBase(dId);
-  //     }
-  //   }
-  // }
 
   void favoriteButton(FavProductModel favProductModel) {
     int i = 0;
@@ -220,7 +195,33 @@ class DatabaseCubit extends Cubit<DatabaseState> {
       return price;
     } else {
       emit(GetPriceAfterDiscountState());
-      return price * (discountValue / 100);
+      return (price - price * (discountValue / 100));
     }
+  }
+
+  void deleteDatabase() {
+    for (var element in cart) {
+      deleteFromCartDataBase(element.dbId!);
+    }
+
+    for (var element in fav) {
+      deleteFromFavDataBase(element.dbId!);
+    }
+    emit(DeleteLocalDatabaseState());
+  }
+
+  String whatsAppMessage = 'Hello i\'ve an order\n';
+
+  void getWhatsAppMessage() {
+    whatsAppMessage = '';
+    whatsAppMessage = 'Hello i\'ve an order\n';
+    for (int i = 0; i < cart.length; i++) {
+      whatsAppMessage +=
+          '\n${i + 1})\nCategory: ${cart[i].category}\nName: ${cart[i].title}\nPrice: ${getTwoDecimalDouble(getPriceAfterDiscount(cart[i].price.toDouble(), cart[i].discountValue!.toDouble()).toString())} E.g\nCount: ${cart[i].count}\n';
+    }
+    whatsAppMessage +=
+        '\n*Total Price: ${getTwoDecimalDouble(allCartProductsPrice.toString())} E.g*\n';
+
+    emit(WhatsAppMessageState());
   }
 }

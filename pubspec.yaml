@@ -33,6 +33,7 @@ dependencies:
   smooth_page_indicator: ^1.0.0+2
   dropdown_search: ^5.0.3
   sqflite: ^2.2.0+2
+  url_launcher: ^6.1.6
 
 
 

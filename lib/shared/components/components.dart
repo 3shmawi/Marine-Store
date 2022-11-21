@@ -6,6 +6,7 @@ import 'package:beauty_supplies_project/shared/color/colors.dart';
 import 'package:beauty_supplies_project/shared/icon/icons.dart';
 import 'package:beauty_supplies_project/shared/sqflite_cubit/database_cubit.dart';
 import 'package:beauty_supplies_project/shared/sqflite_cubit/database_state.dart';
+import 'package:beauty_supplies_project/utilities/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,13 +14,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../admin_screens/upload_product/cubit/admin_upload_product_cubit.dart';
-import '../../admin_screens/upload_product/cubit/admin_upload_product_state.dart';
 import '../../database/remote_database_controller.dart';
 import '../../models/category.dart';
 import '../../models/product.dart';
 import '../../models/rate.dart';
 import '../../models/user.dart';
+import '../../modules/admin_screens/upload_product/cubit/admin_upload_product_cubit.dart';
+import '../../modules/admin_screens/upload_product/cubit/admin_upload_product_state.dart';
 import '../../services/cache_helper_services.dart';
 import '../../services/firebase_auth_services.dart';
 import '../../utilities/app_routes.dart';
@@ -872,7 +873,7 @@ class DefaultCategoryPageCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(15),
-        height: w / 2,
+        height: w / 3,
         width: w / 2.4,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -889,19 +890,19 @@ class DefaultCategoryPageCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const SizedBox(),
-            Container(
-              height: w / 8,
-              width: w / 8,
-              decoration: BoxDecoration(
-                color: color.withOpacity(.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                icon,
-                color: color.withOpacity(.6),
-              ),
-            ),
+            // const SizedBox(),
+            // Container(
+            //   height: w / 8,
+            //   width: w / 8,
+            //   decoration: BoxDecoration(
+            //     color: color.withOpacity(.1),
+            //     shape: BoxShape.circle,
+            //   ),
+            //   child: Icon(
+            //     icon,
+            //     color: color.withOpacity(.6),
+            //   ),
+            // ),
             Text(
               title,
               maxLines: 4,
@@ -914,7 +915,7 @@ class DefaultCategoryPageCard extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(),
+            // const SizedBox(),
           ],
         ),
       ),
@@ -940,56 +941,7 @@ class BlurTheStatusCard extends StatelessWidget {
   }
 }
 
-class CategoryItem extends StatelessWidget {
-  const CategoryItem({
-    Key? key,
-    required this.category,
-    required this.index,
-  }) : super(key: key);
 
-  final List<CategoryModel> category;
-  final int index;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Image(
-            image: CachedNetworkImageProvider(
-              category[index].imgUrl,
-            ),
-            height: 120.0,
-            width: 150.0,
-            fit: BoxFit.cover,
-          ),
-          Container(
-            padding: const EdgeInsets.all(5),
-            alignment: AlignmentDirectional.centerEnd,
-            color: Colors.white,
-            width: 150.0,
-            child: Text(
-              category[index].name,
-              maxLines: 1,
-              textDirection: TextDirection.rtl,
-              textAlign: TextAlign.end,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 14.0,
-                color: defaultColor,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class TextHeader extends StatelessWidget {
   const TextHeader({
@@ -1018,10 +970,11 @@ class DefaultRating extends StatelessWidget {
     Key? key,
     required this.id,
     this.size = 25,
+    this.isShow= false,
   }) : super(key: key);
   final double size;
   final String id;
-
+final bool isShow;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<RateModel>>(
@@ -1057,8 +1010,15 @@ class DefaultRating extends StatelessWidget {
                 itemSize: size,
                 direction: Axis.horizontal,
               ),
+              if(isShow)
+              const Spacer(),
+              if(isShow)
               Text(
-                ' (${rateSum / rate.length})',
+                ' (${getTwoDecimalDouble((rateSum / rate.length).toString())})',
+                style: Theme.of(context).textTheme.caption,
+              ),
+              Text(
+                ' (${rate.length})',
                 style: Theme.of(context).textTheme.caption,
               ),
             ],
@@ -1250,7 +1210,7 @@ class DefaultProductCard extends StatelessWidget {
                                 Row(
                                   children: [
                                     Text(
-                                      '${product.price} E.g',
+                                      '${getTwoDecimalDouble(product.price.toString())} E.g',
                                       style: Theme.of(context)
                                           .textTheme
                                           .caption!
@@ -1267,7 +1227,7 @@ class DefaultProductCard extends StatelessWidget {
                                 Row(
                                   children: [
                                     Text(
-                                      '${product.price - (product.price * (product.discountValue!) / 100)} E.g   ',
+                                      '${getTwoDecimalDouble((product.price - (product.price * (product.discountValue!) / 100)).toString())} E.g   ',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: Theme.of(context)
@@ -1277,7 +1237,7 @@ class DefaultProductCard extends StatelessWidget {
                                     ),
                                     Expanded(
                                       child: Text(
-                                        '${product.price} E.g',
+                                        '${getTwoDecimalDouble(product.price.toString())} E.g',
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: Theme.of(context)

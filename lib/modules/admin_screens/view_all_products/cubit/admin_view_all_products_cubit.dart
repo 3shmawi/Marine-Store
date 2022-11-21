@@ -1,8 +1,8 @@
 import 'package:beauty_supplies_project/services/firestore_services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../models/product.dart';
-import '../../../utilities/firebase_collections_path.dart';
+import '../../../../models/product.dart';
+import '../../../../utilities/firebase_collections_path.dart';
 import 'admin_view_all_products_state.dart';
 
 class AdminViewAllProductsCubit extends Cubit<AdminViewAllProductsState> {

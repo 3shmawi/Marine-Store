@@ -20,8 +20,8 @@ class SearchCubit extends Cubit<SearchState> {
     resultSearch = [];
 
     for (var element in allProducts) {
-      if (element.title.toLowerCase().contains(search.toLowerCase()) ||
-          element.description.contains(search)) resultSearch.add(element);
+      if (element.title.toLowerCase().contains(search) ||
+          element.description.toLowerCase().contains(search)) resultSearch.add(element);
     }
     emit(ChangeSearchState());
   }
@@ -30,8 +30,8 @@ class SearchCubit extends Cubit<SearchState> {
     resultSearch = [];
 
     for (var element in cartProducts) {
-      if (element.title.toLowerCase().contains(search.toLowerCase()) ||
-          element.description.contains(search)) resultSearch.add(element);
+      if (element.title.toLowerCase().contains(search) ||
+          element.description.toLowerCase().contains(search)) resultSearch.add(element);
     }
     emit(ChangeSearchState());
   }
@@ -40,8 +40,8 @@ class SearchCubit extends Cubit<SearchState> {
     resultSearch = [];
 
     for (var element in adminProducts) {
-      if (element.title.toLowerCase().contains(search.toLowerCase()) ||
-          element.description.contains(search)) resultSearch.add(element);
+      if (element.title.toLowerCase().contains(search) ||
+          element.description.toLowerCase().contains(search)) resultSearch.add(element);
     }
     emit(ChangeSearchState());
   }
