@@ -1,4 +1,4 @@
-# beauty_supplies_project
+# Marine Store
 
 A new Flutter project.
 
@@ -8,20 +8,16 @@ This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)![Screenshot from 2023-07-20 08-27-43](https://github.com/Ashmaawy/Marine-Store/assets/100779215/437a8bc5-f4ce-4b78-928d-df7747850f12)
+![Screenshot from 2023-07-20 08-27-58](https://github.com/Ashmaawy/Marine-Store/assets/100779215/2c07d733-e573-4cb7-a289-550d8a4409a3)
+![Screenshot from 2023-07-20 08-28-13](https://github.com/Ashmaawy/Marine-Store/assets/100779215/ab7804b5-23e2-430e-ac72-ccd117d0aba0)
+![Screenshot from 2023-07-20 08-28-35](https://github.com/Ashmaawy/Marine-Store/assets/100779215/5220f0f7-ffea-4637-8411-c8c832e0b00a)
+![Screenshot from 2023-07-20 08-28-54](https://github.com/Ashmaawy/Marine-Store/assets/100779215/54239532-4412-4dee-ac54-97d567cee229)
+![Screenshot from 2023-07-20 08-29-15](https://github.com/Ashmaawy/Marine-Store/assets/100779215/55feb45e-76bd-48f8-8f71-8b04e9bda799)
+
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
+For help getting started with Flutter development, view the![Screenshot from 2023-07-20 08-27-07](https://github.com/Ashmaawy/Marine-Store/assets/100779215/ca2bae3a-d4d9-4b2f-ba5b-e11d1dee66ec)
+
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
-
-![image](https://github.com/Ashmaawy/E-Commerce/assets/100779215/6e3727b1-1081-472b-a8e0-a7a81464a077)
-![image](https://github.com/Ashmaawy/E-Commerce/assets/100779215/54ec98ea-a721-4167-82d8-fecb28a5c249)
-![image](https://github.com/Ashmaawy/E-Commerce/assets/100779215/67cfab47-3df2-4513-9499-4e13fd6b521e)
-![image](https://github.com/Ashmaawy/E-Commerce/assets/100779215/16f5d5db-48d4-40a3-936c-6d3c493fed0a)
-![image](https://github.com/Ashmaawy/E-Commerce/assets/100779215/234af225-45d7-4e32-8d04-b4f1b4ec25a4)
-![image](https://github.com/Ashmaawy/E-Commerce/assets/100779215/655b1200-52d5-4f70-9522-b87ed90721c9)
-![image](https://github.com/Ashmaawy/E-Commerce/assets/100779215/40266714-35be-43b4-a3de-262b2f6c0c4d)
-![image](https://github.com/Ashmaawy/E-Commerce/assets/100779215/d452f441-59ba-4fb3-b39c-5fac13083e75)
-![image](https://github.com/Ashmaawy/E-Commerce/assets/100779215/e999bffd-24fd-401f-bfdc-2610709874fd)
-![image](https://github.com/Ashmaawy/E-Commerce/assets/100779215/a65c924c-5478-47b4-9559-1bed5ff6a750)
