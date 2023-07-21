@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utilities/enums.dart';
+import '../../../beauty_supplies_project/lib/utilities/enums.dart';
 
 class CacheHelper {
   static late SharedPreferences sharedPreferences;
